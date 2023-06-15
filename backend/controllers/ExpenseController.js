@@ -17,25 +17,35 @@ const getExpenseHistory = asyncHandler(async (req, res) => {
     res.status(200).json(expenses);
   } else if (req.user.userType === 'HR') {
     const expenses = await Expense.find({
-      currentStatus: {
-        $in: [
-          'EmployeeRequested',
-          'HRApproved',
-          'DirectorApproved',
-          'FinanceDepartmentApproved',
-        ],
-      },
-      status: { $in: ['Reimbursed', 'Rejected', 'InProcess'] },
+      $or: [
+        { currentStatus: 'EmployeeRequested', status: 'Rejected' },
+        {
+          currentStatus: 'HRApproved',
+          status: { $in: ['Rejected', 'InProcess'] },
+        },
+        {
+          currentStatus: 'DirectorApproved',
+          status: { $in: ['Rejected', 'InProcess'] },
+        },
+        { currentStatus: 'FinanceDepartmentApproved', status: 'Reimbursed' },
+      ],
     }).sort({
       createdAt: -1,
     });
     res.status(200).json(expenses);
   } else if (req.user.userType === 'Director') {
     const expenses = await Expense.find({
-      currentStatus: {
-        $in: ['HRApproved', 'DirectorApproved', 'FinanceDepartmentApproved'],
-      },
-      status: { $in: ['Reimbursed', 'Rejected', 'InProcess'] },
+      $or: [
+        {
+          currentStatus: 'HRApproved',
+          status: { $in: ['Rejected'] },
+        },
+        {
+          currentStatus: 'DirectorApproved',
+          status: { $in: ['Rejected', 'InProcess'] },
+        },
+        { currentStatus: 'FinanceDepartmentApproved', status: 'Reimbursed' },
+      ],
     }).sort({
       createdAt: -1,
     });
