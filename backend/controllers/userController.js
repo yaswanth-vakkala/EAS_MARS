@@ -58,7 +58,38 @@ const registerUser = asyncHandler(async (req, res) => {
       lastName: user.lastName,
       email: user.email,
       userType: user.userType,
+      userId: user.userId,
     });
+  } else {
+    res.status(400);
+    throw new Error('Invalid user data');
+  }
+});
+
+// @desc    Register a new user by admin
+// @route   POST /api/user/addUser
+// @access  Admin
+const addUser = asyncHandler(async (req, res) => {
+  const { firstName, lastName, email, password, userId, userType } = req.body;
+
+  const userExists = await User.findOne({ email });
+
+  if (userExists) {
+    res.status(400);
+    throw new Error('User already exists');
+  }
+
+  const user = await User.create({
+    firstName,
+    lastName,
+    email,
+    password,
+    userId,
+    userType,
+  });
+
+  if (user) {
+    res.status(201).json({ message: 'User Created Successfully!' });
   } else {
     res.status(400);
     throw new Error('Invalid user data');
@@ -207,4 +238,5 @@ export {
   deleteUser,
   getUserById,
   updateUser,
+  addUser,
 };

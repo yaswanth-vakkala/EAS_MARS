@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { FaTrash, FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
@@ -19,6 +20,7 @@ const UserListScreen = () => {
     if (window.confirm('Are you sure')) {
       try {
         await deleteUser(id);
+        toast.success('User Deleted Successfully');
         refetch();
       } catch (err) {
         toast.error(err?.data?.message || err.error);
@@ -32,6 +34,11 @@ const UserListScreen = () => {
 
   return (
     <>
+      <Link to={'/admin/addUser'}>
+        <Button variant="primary" className="my-2">
+          Add User
+        </Button>
+      </Link>
       <h1>Users</h1>
       {isLoading ? (
         <Loader />

@@ -42,7 +42,7 @@ const ProfileScreen = () => {
         </tbody>
       </Table>
       <div>
-        <Link to={'/user/editProfile'}>
+        <Link to={`/userProfile/${userInfo._id}/edit`}>
           <Button variant="primary" className="my-2 mx-2">
             Edit Profile
           </Button>

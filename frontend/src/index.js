@@ -22,10 +22,12 @@ import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
 import UserListScreen from './screens/admin/UserListScreen';
 import UserEditScreen from './screens/admin/UserEditScreen';
+import UserFormScreen from './screens/admin/UserFormScreen';
 import EmployeeRoute from './components/EmployeeRoute';
 import ExpenseForm from './components/ExpenseForm';
 import HistoryScreen from './screens/HistoryScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import UserProfileUpdateScreen from './screens/UserProfileUpdateScreen';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -44,6 +46,10 @@ const router = createBrowserRouter(
           element={<HomeScreen />}
         />
         <Route path="/user/profile" element={<ProfileScreen />} />
+        <Route
+          path="/userProfile/:id/edit"
+          element={<UserProfileUpdateScreen />}
+        />
 
         {/* <Route path="/shipping" element={<ShippingScreen />} />
         <Route path="/payment" element={<PaymentScreen />} />
@@ -58,6 +64,7 @@ const router = createBrowserRouter(
       {/* Admin users */}
       <Route path="" element={<AdminRoute />}>
         <Route path="/admin/userlist" element={<UserListScreen />} />
+        <Route path="/admin/addUser" element={<UserFormScreen />} />
         <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
         {/* <Route path="/admin/orderlist" element={<OrderListScreen />} />
         <Route path="/admin/productlist" element={<ProductListScreen />} />

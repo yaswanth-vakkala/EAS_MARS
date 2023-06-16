@@ -41,7 +41,7 @@ const UserEditScreen = () => {
         userId,
         userType,
       });
-      toast.success('user updated successfully');
+      toast.success('User Updated Successfully');
       refetch();
       navigate('/admin/userlist');
     } catch (err) {
