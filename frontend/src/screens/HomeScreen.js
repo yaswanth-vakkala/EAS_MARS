@@ -10,7 +10,7 @@ import DirectorExpenseList from '../components/DirectorExpenseList';
 import FinanceDepartmentExpenseList from '../components/FinanceDepartmentExpenseList';
 
 const HomeScreen = () => {
-  const { data, isLoading, error } = useGetExpensesQuery({});
+  const { data, refetch, isLoading, error } = useGetExpensesQuery({});
   const { userInfo } = useSelector((state) => state.auth);
 
   return (
@@ -35,7 +35,7 @@ const HomeScreen = () => {
         <>
           <h1>Expenses List</h1>
           {userInfo.userType === 'Employee' && (
-            <EmployeeExpenseList expenses={data} />
+            <EmployeeExpenseList expenses={data} refetch={refetch} />
           )}
           {userInfo.userType === 'HR' && <HRExpenseList expenses={data} />}
           {userInfo.userType === 'Director' && (

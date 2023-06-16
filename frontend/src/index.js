@@ -19,9 +19,13 @@ import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import PrivateRoute from './components/PrivateRoute';
+import AdminRoute from './components/AdminRoute';
+import UserListScreen from './screens/admin/UserListScreen';
+import UserEditScreen from './screens/admin/UserEditScreen';
 import EmployeeRoute from './components/EmployeeRoute';
 import ExpenseForm from './components/ExpenseForm';
 import HistoryScreen from './screens/HistoryScreen';
+import ProfileScreen from './screens/ProfileScreen';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,7 +35,7 @@ const router = createBrowserRouter(
       {/* Registered users */}
       <Route path="" element={<PrivateRoute />}>
         <Route index={true} path="/" element={<HomeScreen />} />
-        <Route path="/history" element={<HistoryScreen />} />
+        <Route path="/user/history" element={<HistoryScreen />} />
 
         <Route path="/search/:keyword" element={<HomeScreen />} />
         <Route path="/page/:pageNumber" element={<HomeScreen />} />
@@ -39,6 +43,7 @@ const router = createBrowserRouter(
           path="/search/:keyword/page/:pageNumber"
           element={<HomeScreen />}
         />
+        <Route path="/user/profile" element={<ProfileScreen />} />
 
         {/* <Route path="/shipping" element={<ShippingScreen />} />
         <Route path="/payment" element={<PaymentScreen />} />
@@ -51,17 +56,16 @@ const router = createBrowserRouter(
         <Route path="/addExpense" element={<ExpenseForm />} />
       </Route>
       {/* Admin users */}
-      {/* <Route path="" element={<AdminRoute />}>
-        <Route path="/admin/orderlist" element={<OrderListScreen />} />
+      <Route path="" element={<AdminRoute />}>
+        <Route path="/admin/userlist" element={<UserListScreen />} />
+        <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
+        {/* <Route path="/admin/orderlist" element={<OrderListScreen />} />
         <Route path="/admin/productlist" element={<ProductListScreen />} />
         <Route
           path="/admin/productlist/:pageNumber"
           element={<ProductListScreen />}
-        />
-        <Route path="/admin/userlist" element={<UserListScreen />} />
-        <Route path="/admin/product/:id/edit" element={<ProductEditScreen />} />
-        <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
-      </Route> */}
+        /> */}
+      </Route>
     </Route>
   )
 );

@@ -11,7 +11,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 
 const HistoryScreen = () => {
-  const { data, isLoading, error } = useGetExpensesHistoryQuery({});
+  const { data, refetch, isLoading, error } = useGetExpensesHistoryQuery({});
   const { userInfo } = useSelector((state) => state.auth);
 
   return (
@@ -28,14 +28,16 @@ const HistoryScreen = () => {
         <>
           <h1>Expenses History</h1>
           {userInfo.userType === 'Employee' && (
-            <EmployeeHistory expenses={data} />
+            <EmployeeHistory expenses={data} refetch={refetch} />
           )}
-          {userInfo.userType === 'HR' && <HRHistory expenses={data} />}
+          {userInfo.userType === 'HR' && (
+            <HRHistory expenses={data} refetch={refetch} />
+          )}
           {userInfo.userType === 'Director' && (
-            <DirectorHistory expenses={data} />
+            <DirectorHistory expenses={data} refetch={refetch} />
           )}
           {userInfo.userType === 'FinanceDepartment' && (
-            <FinanceDepartmentHistory expenses={data} />
+            <FinanceDepartmentHistory expenses={data} refetch={refetch} />
           )}
         </>
       )}

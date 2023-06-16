@@ -16,7 +16,7 @@ function ExpenseList(props) {
     if (!window.confirm('Are you sure to delete the Expense?')) return;
     try {
       const res = await deleteExpenese(expense_id);
-      window.location.reload();
+      props.refetch();
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }

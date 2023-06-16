@@ -19,6 +19,7 @@ const loginUser = asyncHandler(async (req, res) => {
       lastName: user.lastName,
       email: user.email,
       userType: user.userType,
+      userId: user.userId,
     });
   } else {
     res.status(401);
@@ -129,7 +130,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @route   GET /api/users
 // @access  Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({});
+  const users = await User.find({}).select('-password');
   res.json(users);
 });
 
@@ -175,17 +176,21 @@ const updateUser = asyncHandler(async (req, res) => {
     user.firstName = req.body.firstName || user.firstName;
     user.lastName = req.body.lastName || user.lastName;
     user.email = req.body.email || user.email;
-    user.userType = req.body.userType;
+    user.userId = req.body.userId || user.userId;
+    user.userType = req.body.userType || user.userType;
 
-    const updatedUser = await user.save();
+    await user.save();
 
-    res.json({
-      _id: updatedUser._id,
-      lastName: updatedUser.lastName,
-      firstName: updatedUser.firstName,
-      email: updatedUser.email,
-      userType: updatedUser.userType,
-    });
+    // res.json({
+    //   _id: updatedUser._id,
+    //   lastName: updatedUser.lastName,
+    //   firstName: updatedUser.firstName,
+    //   email: updatedUser.email,
+    //   userId: updateUser.userId,
+    //   userType: updatedUser.userType,
+    // });
+    // await User.updateOne({ _id: req.params.id }, { $set: req.body });
+    res.json({ message: 'success' });
   } else {
     res.status(404);
     throw new Error('User not found');
