@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Form, Button, Row, Col } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Form, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
 import { useCreateExpenseMutation } from '../slices/expensesApiSlice';
@@ -18,7 +17,6 @@ const ExpenseForm = () => {
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [createExpense, { isLoading }] = useCreateExpenseMutation();
@@ -27,7 +25,7 @@ const ExpenseForm = () => {
     e.preventDefault();
     let amount = Math.round(Number(cost) * 100) / 100;
     try {
-      const res = await createExpense({
+      await createExpense({
         empName,
         empId,
         projName,

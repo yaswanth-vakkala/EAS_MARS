@@ -1,21 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Table,
-  Form,
-  Button,
-  Row,
-  Col,
-  Card,
-  ListGroup,
-} from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { FaTimes } from 'react-icons/fa';
+import React from 'react';
+import { Table, Button } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import Message from '../components/Message';
-import Loader from '../components/Loader';
-
 const ProfileScreen = () => {
   const { userInfo } = useSelector((state) => state.auth);
   return (
