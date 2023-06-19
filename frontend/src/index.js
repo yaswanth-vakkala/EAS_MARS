@@ -34,13 +34,18 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />}>
       <Route path="/login" element={<LoginScreen />} />
       <Route path="/register" element={<RegisterScreen />} />
+
       {/* Registered users */}
       <Route path="" element={<PrivateRoute />}>
         <Route index={true} path="/" element={<HomeScreen />} />
         <Route path="/user/history" element={<HistoryScreen />} />
 
-        <Route path="/search/:keyword" element={<HomeScreen />} />
-        <Route path="/page/:pageNumber" element={<HomeScreen />} />
+        {/* <Route path="/search/:keyword" element={<HomeScreen />} /> */}
+        <Route path="page/:pageNumber" element={<HomeScreen />} />
+        <Route
+          path="user/history/page/:pageNumber"
+          element={<HistoryScreen />}
+        />
         <Route
           path="/search/:keyword/page/:pageNumber"
           element={<HomeScreen />}
@@ -64,6 +69,10 @@ const router = createBrowserRouter(
       {/* Admin users */}
       <Route path="" element={<AdminRoute />}>
         <Route path="/admin/userlist" element={<UserListScreen />} />
+        <Route
+          path="/admin/userlist/page/:pageNumber"
+          element={<UserListScreen />}
+        />
         <Route path="/admin/addUser" element={<UserFormScreen />} />
         <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
         {/* <Route path="/admin/orderlist" element={<OrderListScreen />} />

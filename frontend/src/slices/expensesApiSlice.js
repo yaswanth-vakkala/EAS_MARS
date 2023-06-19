@@ -4,16 +4,22 @@ import { apiSlice } from './apiSlice';
 export const expensesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getExpenses: builder.query({
-      query: () => ({
+      query: ({ pageNumber }) => ({
         url: EXPENSES_URL,
+        params: {
+          pageNumber,
+        },
         method: 'GET',
       }),
       keepUnusedDataFor: 5,
       providesTags: ['Expenses'],
     }),
     getExpensesHistory: builder.query({
-      query: () => ({
+      query: ({ pageNumber }) => ({
         url: `${EXPENSES_URL}/history`,
+        params: {
+          pageNumber,
+        },
         method: 'GET',
       }),
       keepUnusedDataFor: 5,

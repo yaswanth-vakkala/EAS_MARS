@@ -2,7 +2,9 @@ import Table from 'react-bootstrap/Table';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 import { AiOutlineClose, AiOutlineCheck } from 'react-icons/ai';
+
 import { useUpdateExpenseMutation } from '../slices/expensesApiSlice';
+import Paginate from '../components/Paginate';
 
 const DirectorExpenseList = (props) => {
   function formatDate(date) {
@@ -16,6 +18,7 @@ const DirectorExpenseList = (props) => {
     if (!window.confirm('Are you sure to Accept the Expense?')) return;
     try {
       await updateExpense(data);
+      props.refetch();
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
@@ -26,6 +29,7 @@ const DirectorExpenseList = (props) => {
     if (!window.confirm('Are you sure to Reject the Expense?')) return;
     try {
       await updateExpense(data);
+      props.refetch();
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
@@ -49,7 +53,7 @@ const DirectorExpenseList = (props) => {
         </tr>
       </thead>
       <tbody>
-        {props.expenses.map((expense) => (
+        {props.data.expenses.map((expense) => (
           <tr key={expense._id} style={{ textAlign: 'center' }}>
             <td>{expense.empName}</td>
             <td>{expense.empId}</td>
@@ -81,6 +85,14 @@ const DirectorExpenseList = (props) => {
             </td>
           </tr>
         ))}
+        <tr style={{ all: 'initial' }}>
+          <td style={{ borderStyle: 'none' }}></td>
+        </tr>
+        <tr style={{ all: 'initial' }}>
+          <td style={{ all: 'initial' }}>
+            <Paginate pages={props.data.pages} page={props.data.page} />
+          </td>
+        </tr>
       </tbody>
     </Table>
   );

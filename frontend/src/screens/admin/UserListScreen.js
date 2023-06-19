@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Table, Button } from 'react-bootstrap';
+import { Table, Button, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FaTrash, FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
 import Message from '../../components/Message';
@@ -10,9 +10,12 @@ import {
   useGetUsersQuery,
 } from '../../slices/usersApiSlice';
 import { toast } from 'react-toastify';
+import { useParams } from 'react-router-dom';
+import Paginate from '../../components/Paginate';
 
 const UserListScreen = () => {
-  const { data: users, refetch, isLoading, error } = useGetUsersQuery();
+  const { pageNumber } = useParams();
+  const { data, refetch, isLoading, error } = useGetUsersQuery({ pageNumber });
 
   const [deleteUser] = useDeleteUserMutation();
 
@@ -46,6 +49,8 @@ const UserListScreen = () => {
         <Message variant="danger">
           {error?.data?.message || error.error}
         </Message>
+      ) : data.users.length === 0 ? (
+        <Message variant="danger">No Users found</Message>
       ) : (
         <Table striped bordered hover responsive className="table-sm">
           <thead>
@@ -60,7 +65,7 @@ const UserListScreen = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
+            {data.users.map((user) => (
               <tr key={user._id} style={{ textAlign: 'center' }}>
                 <td>{user._id}</td>
                 <td>{user.firstName + ' ' + user.lastName}</td>
@@ -95,6 +100,14 @@ const UserListScreen = () => {
                 </td>
               </tr>
             ))}
+            <tr style={{ all: 'initial' }}>
+              <td style={{ borderStyle: 'none' }}></td>
+            </tr>
+            <tr style={{ all: 'initial' }}>
+              <td style={{ all: 'initial' }}>
+                <Paginate pages={data.pages} page={data.page} isAdmin={true} />
+              </td>
+            </tr>
           </tbody>
         </Table>
       )}

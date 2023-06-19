@@ -5,17 +5,47 @@ import Expense from '../models/ExpenseModel.js';
 // @route   GET /api/history
 // @access  Private
 const getExpenseHistory = asyncHandler(async (req, res) => {
+  const pageSize = process.env.EXPENSES_HISTORY_PAGINATION_LIMIT || 12;
+  const page = Number(req.query.pageNumber) || 1;
+
   if (req.user.userType === 'Employee') {
+    let count = await Expense.find({
+      user: req.user._id,
+      status: {
+        $in: ['Reimbursed', 'Rejected'],
+      },
+    });
+    count = count.length;
     const expenses = await Expense.find({
       user: req.user._id,
       status: {
         $in: ['Reimbursed', 'Rejected'],
       },
-    }).sort({
-      createdAt: -1,
-    });
-    res.status(200).json(expenses);
+    })
+      .skip(pageSize * (page - 1))
+      .limit(pageSize)
+      .sort({
+        createdAt: -1,
+      });
+    res
+      .status(200)
+      .json({ expenses, page, pages: Math.ceil(count / pageSize) });
   } else if (req.user.userType === 'HR') {
+    let count = await Expense.find({
+      $or: [
+        { currentStatus: 'EmployeeRequested', status: 'Rejected' },
+        {
+          currentStatus: 'HRApproved',
+          status: { $in: ['Rejected', 'InProcess'] },
+        },
+        {
+          currentStatus: 'DirectorApproved',
+          status: { $in: ['Rejected', 'InProcess'] },
+        },
+        { currentStatus: 'FinanceDepartmentApproved', status: 'Reimbursed' },
+      ],
+    });
+    count = count.length;
     const expenses = await Expense.find({
       $or: [
         { currentStatus: 'EmployeeRequested', status: 'Rejected' },
@@ -29,11 +59,30 @@ const getExpenseHistory = asyncHandler(async (req, res) => {
         },
         { currentStatus: 'FinanceDepartmentApproved', status: 'Reimbursed' },
       ],
-    }).sort({
-      createdAt: -1,
-    });
-    res.status(200).json(expenses);
+    })
+      .skip(pageSize * (page - 1))
+      .limit(pageSize)
+      .sort({
+        createdAt: -1,
+      });
+    res
+      .status(200)
+      .json({ expenses, page, pages: Math.ceil(count / pageSize) });
   } else if (req.user.userType === 'Director') {
+    let count = await Expense.find({
+      $or: [
+        {
+          currentStatus: 'HRApproved',
+          status: { $in: ['Rejected'] },
+        },
+        {
+          currentStatus: 'DirectorApproved',
+          status: { $in: ['Rejected', 'InProcess'] },
+        },
+        { currentStatus: 'FinanceDepartmentApproved', status: 'Reimbursed' },
+      ],
+    });
+    count = count.length;
     const expenses = await Expense.find({
       $or: [
         {
@@ -46,20 +95,37 @@ const getExpenseHistory = asyncHandler(async (req, res) => {
         },
         { currentStatus: 'FinanceDepartmentApproved', status: 'Reimbursed' },
       ],
-    }).sort({
-      createdAt: -1,
-    });
-    res.status(200).json(expenses);
+    })
+      .skip(pageSize * (page - 1))
+      .limit(pageSize)
+      .sort({
+        createdAt: -1,
+      });
+    res
+      .status(200)
+      .json({ expenses, page, pages: Math.ceil(count / pageSize) });
   } else if (req.user.userType === 'FinanceDepartment') {
+    let count = await Expense.find({
+      currentStatus: {
+        $in: ['DirectorApproved', 'FinanceDepartmentApproved'],
+      },
+      status: { $in: ['Reimbursed', 'Rejected'] },
+    });
+    count = count.length;
     const expenses = await Expense.find({
       currentStatus: {
         $in: ['DirectorApproved', 'FinanceDepartmentApproved'],
       },
       status: { $in: ['Reimbursed', 'Rejected'] },
-    }).sort({
-      createdAt: -1,
-    });
-    res.status(200).json(expenses);
+    })
+      .skip(pageSize * (page - 1))
+      .limit(pageSize)
+      .sort({
+        createdAt: -1,
+      });
+    res
+      .status(200)
+      .json({ expenses, page, pages: Math.ceil(count / pageSize) });
   } else {
     res.status(404);
     throw new Error('Expenses not found');
@@ -70,32 +136,80 @@ const getExpenseHistory = asyncHandler(async (req, res) => {
 // @route   GET /api/expense
 // @access  Private
 const getExpenses = asyncHandler(async (req, res) => {
+  const pageSize = process.env.EXPENSES_PAGINATION_LIMIT || 12;
+  const page = Number(req.query.pageNumber) || 1;
   if (req.user.userType === 'Employee') {
+    let count = await Expense.find({
+      user: req.user._id,
+      status: 'InProcess',
+    });
+    count = count.length;
     const expenses = await Expense.find({
       user: req.user._id,
       status: 'InProcess',
-    }).sort({
-      createdAt: -1,
-    });
-    res.status(200).json(expenses);
+    })
+      .skip(pageSize * (page - 1))
+      .limit(pageSize)
+      .sort({
+        createdAt: -1,
+      });
+    res
+      .status(200)
+      .json({ expenses, page, pages: Math.ceil(count / pageSize) });
   } else if (req.user.userType === 'HR') {
-    const expenses = await Expense.find({
+    let count = await Expense.find({
       currentStatus: 'EmployeeRequested',
       status: 'InProcess',
     });
-    res.status(200).json(expenses);
-  } else if (req.user.userType === 'Director') {
+    count = count.length;
     const expenses = await Expense.find({
+      currentStatus: 'EmployeeRequested',
+      status: 'InProcess',
+    })
+      .skip(pageSize * (page - 1))
+      .limit(pageSize)
+      .sort({
+        createdAt: -1,
+      });
+    res
+      .status(200)
+      .json({ expenses, page, pages: Math.ceil(count / pageSize) });
+  } else if (req.user.userType === 'Director') {
+    let count = await Expense.find({
       currentStatus: 'HRApproved',
       status: 'InProcess',
     });
-    res.status(200).json(expenses);
-  } else if (req.user.userType === 'FinanceDepartment') {
+    count = count.length;
     const expenses = await Expense.find({
+      currentStatus: 'HRApproved',
+      status: 'InProcess',
+    })
+      .skip(pageSize * (page - 1))
+      .limit(pageSize)
+      .sort({
+        createdAt: -1,
+      });
+    res
+      .status(200)
+      .json({ expenses, page, pages: Math.ceil(count / pageSize) });
+  } else if (req.user.userType === 'FinanceDepartment') {
+    let count = await Expense.find({
       currentStatus: 'DirectorApproved',
       status: 'InProcess',
     });
-    res.status(200).json(expenses);
+    count = count.length;
+    const expenses = await Expense.find({
+      currentStatus: 'DirectorApproved',
+      status: 'InProcess',
+    })
+      .skip(pageSize * (page - 1))
+      .limit(pageSize)
+      .sort({
+        createdAt: -1,
+      });
+    res
+      .status(200)
+      .json({ expenses, page, pages: Math.ceil(count / pageSize) });
   } else {
     res.status(404);
     throw new Error('Expenses not found');

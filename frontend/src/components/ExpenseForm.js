@@ -13,7 +13,7 @@ const ExpenseForm = () => {
   const [projName, setProjName] = useState('');
   const [projId, setProjId] = useState('');
   const [billProof, setbillProof] = useState('');
-  const [cost, setCost] = useState(0);
+  const [cost, setCost] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
 

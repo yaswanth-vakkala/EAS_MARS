@@ -4,6 +4,7 @@ import { RiDeleteBin2Fill } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 
 import { useDeleteExpenseMutation } from '../slices/expensesApiSlice';
+import Paginate from '../components/Paginate';
 
 function ExpenseList(props) {
   function formatDate(date) {
@@ -39,7 +40,7 @@ function ExpenseList(props) {
         </tr>
       </thead>
       <tbody>
-        {props.expenses.map((expense) => (
+        {props.data.expenses.map((expense) => (
           <tr key={expense._id} style={{ textAlign: 'center' }}>
             <td>{expense.empName}</td>
             <td>{expense.empId}</td>
@@ -60,6 +61,14 @@ function ExpenseList(props) {
             </td>
           </tr>
         ))}
+        <tr style={{ all: 'initial' }}>
+          <td style={{ borderStyle: 'none' }}></td>
+        </tr>
+        <tr style={{ all: 'initial' }}>
+          <td style={{ all: 'initial' }}>
+            <Paginate pages={props.data.pages} page={props.data.page} />
+          </td>
+        </tr>
       </tbody>
     </Table>
   );

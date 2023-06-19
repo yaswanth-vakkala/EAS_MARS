@@ -39,7 +39,7 @@ const EmployeeHistory = (props) => {
         </tr>
       </thead>
       <tbody>
-        {props.expenses.map((expense) => (
+        {props.expenses.expenses.map((expense) => (
           <tr key={expense._id} style={{ textAlign: 'center' }}>
             <td>{expense.empName}</td>
             <td>{expense.empId}</td>

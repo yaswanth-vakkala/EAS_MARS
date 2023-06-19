@@ -1,7 +1,7 @@
 import { Row, Col, Button } from 'react-bootstrap';
 import { useGetExpensesQuery } from '../slices/expensesApiSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import EmployeeExpenseList from '../components/EmployeeExpenseList';
@@ -10,7 +10,10 @@ import DirectorExpenseList from '../components/DirectorExpenseList';
 import FinanceDepartmentExpenseList from '../components/FinanceDepartmentExpenseList';
 
 const HomeScreen = () => {
-  const { data, refetch, isLoading, error } = useGetExpensesQuery({});
+  const { pageNumber } = useParams();
+  const { data, refetch, isLoading, error } = useGetExpensesQuery({
+    pageNumber,
+  });
   const { userInfo } = useSelector((state) => state.auth);
 
   return (
@@ -29,20 +32,22 @@ const HomeScreen = () => {
         <Message variant="danger">
           {error?.data?.message || error.error}
         </Message>
-      ) : data.length === 0 ? (
+      ) : data.expenses.length === 0 ? (
         <Message variant="danger">No Expenses Found</Message>
       ) : (
         <>
           <h1>Expenses List</h1>
           {userInfo.userType === 'Employee' && (
-            <EmployeeExpenseList expenses={data} refetch={refetch} />
+            <EmployeeExpenseList data={data} refetch={refetch} />
           )}
-          {userInfo.userType === 'HR' && <HRExpenseList expenses={data} />}
+          {userInfo.userType === 'HR' && (
+            <HRExpenseList data={data} refetch={refetch} />
+          )}
           {userInfo.userType === 'Director' && (
-            <DirectorExpenseList expenses={data} />
+            <DirectorExpenseList data={data} refetch={refetch} />
           )}
           {userInfo.userType === 'FinanceDepartment' && (
-            <FinanceDepartmentExpenseList expenses={data} />
+            <FinanceDepartmentExpenseList data={data} refetch={refetch} />
           )}
         </>
       )}
