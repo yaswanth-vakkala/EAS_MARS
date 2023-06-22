@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Table, Button, Row } from 'react-bootstrap';
+import { Table, Button, Row, Container, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FaTrash, FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
 import Message from '../../components/Message';
@@ -12,10 +12,14 @@ import {
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import Paginate from '../../components/Paginate';
+import SearchBox from '../../components/SearchBox';
 
 const UserListScreen = () => {
-  const { pageNumber } = useParams();
-  const { data, refetch, isLoading, error } = useGetUsersQuery({ pageNumber });
+  const { pageNumber, keyword } = useParams();
+  const { data, refetch, isLoading, error } = useGetUsersQuery({
+    keyword,
+    pageNumber,
+  });
 
   const [deleteUser] = useDeleteUserMutation();
 
@@ -37,11 +41,27 @@ const UserListScreen = () => {
 
   return (
     <>
-      <Link to={'/admin/addUser'}>
-        <Button variant="primary" className="my-2">
-          Add User
-        </Button>
-      </Link>
+      <Container>
+        <Row>
+          <Col md="6">
+            {keyword && (
+              <Link to="/admin/userlist" className="btn btn-light my-2">
+                Go Back
+              </Link>
+            )}
+            {!keyword && (
+              <Link to={'/admin/addUser'}>
+                <Button variant="primary" className="my-2">
+                  Add User
+                </Button>
+              </Link>
+            )}
+          </Col>
+          <Col className="my-2" md="6">
+            <SearchBox />
+          </Col>
+        </Row>
+      </Container>
       <h1>Users</h1>
       {isLoading ? (
         <Loader />
@@ -105,7 +125,12 @@ const UserListScreen = () => {
             </tr>
             <tr style={{ all: 'initial' }}>
               <td style={{ all: 'initial' }}>
-                <Paginate pages={data.pages} page={data.page} isAdmin={true} />
+                <Paginate
+                  pages={data.pages}
+                  page={data.page}
+                  isAdmin={true}
+                  keyword={keyword ? keyword : ''}
+                />
               </td>
             </tr>
           </tbody>

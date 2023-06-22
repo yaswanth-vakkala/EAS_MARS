@@ -163,8 +163,11 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 const getUsers = asyncHandler(async (req, res) => {
   const pageSize = process.env.USERS_PAGINATION_LIMIT || 12;
   const page = Number(req.query.pageNumber) || 1;
-  const count = await User.countDocuments();
-  const users = await User.find({})
+  const keyword = req.query.keyword
+    ? { userId: { $regex: req.query.keyword, $options: 'i' } }
+    : {};
+  const count = await User.countDocuments({ ...keyword });
+  const users = await User.find({ ...keyword })
     .select('-password')
     .limit(pageSize)
     .skip(pageSize * (page - 1));
