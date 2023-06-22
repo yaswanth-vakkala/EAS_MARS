@@ -37,6 +37,7 @@ const expenseSchema = new mongoose.Schema(
       default: 'EmployeeRequested',
     },
     date: { type: Date, default: new Date() },
+    rejectionReason: { type: String, default: '' },
   },
   {
     timestamps: true,

@@ -14,8 +14,8 @@ const HRExpenseList = (props) => {
   const [updateExpense, { isLoading }] = useUpdateExpenseMutation();
 
   async function handleApprove(expense) {
-    const data = { ...expense, currentStatus: 'HRApproved' };
     if (!window.confirm('Are you sure to Accept the Expense?')) return;
+    const data = { ...expense, currentStatus: 'HRApproved' };
     try {
       await updateExpense(data);
       props.refetch();
@@ -25,8 +25,13 @@ const HRExpenseList = (props) => {
   }
 
   async function handleReject(expense) {
-    const data = { ...expense, status: 'Rejected' };
-    if (!window.confirm('Are you sure to Reject the Expense?')) return;
+    let rejectionReason = prompt('Please enter the reason for rejection: ');
+    if (rejectionReason === null) return;
+    const data = {
+      ...expense,
+      status: 'Rejected',
+      rejectionReason: rejectionReason,
+    };
     try {
       await updateExpense(data);
       props.refetch();

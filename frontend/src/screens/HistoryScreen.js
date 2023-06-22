@@ -62,6 +62,7 @@ const HistoryScreen = () => {
                 <th>Bill Proof</th>
                 <th>Status</th>
                 <th>Approval Level</th>
+                <th>Rejection Reason</th>
                 <th>Amount</th>
                 <th>Description</th>
                 <th>Date</th>
@@ -78,6 +79,13 @@ const HistoryScreen = () => {
                   <td>{expense.billProof}</td>
                   <td>{expense.status}</td>
                   <td>{expense.currentStatus}</td>
+                  <td>
+                    {expense.status === 'Rejected' ? (
+                      expense.rejectionReason
+                    ) : (
+                      <span style={{ color: '#4cbf41' }}>Approved by you</span>
+                    )}
+                  </td>
                   <td>{expense.amount}</td>
                   <td>{expense.description}</td>
                   <td>{formatDate(expense.date)}</td>
