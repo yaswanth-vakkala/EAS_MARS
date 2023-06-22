@@ -54,7 +54,7 @@ const DirectorHistory = (props) => {
             <td>{formatDate(expense.date)}</td>
             <td align="center">
               <RiDeleteBin2Fill
-                color="red"
+                color="#FF0000"
                 size={'1.5em'}
                 onClick={() => handleDelete(expense._id)}
                 style={{ cursor: 'pointer' }}

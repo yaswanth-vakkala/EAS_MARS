@@ -77,13 +77,29 @@ const HistoryScreen = () => {
                   <td>{expense.projName}</td>
                   <td>{expense.projId}</td>
                   <td>{expense.billProof}</td>
-                  <td>{expense.status}</td>
-                  <td>{expense.currentStatus}</td>
+                  <td>
+                    {expense.status === 'Reimbursed' ? (
+                      <span style={{ color: '#58c445' }}>Reimbursed</span>
+                    ) : expense.status === 'InProcess' ? (
+                      <span style={{color: '#0000FF'}}>InProcess</span>
+                    ) : (
+                      <span style={{ color: '#FF0000' }}>Rejected</span>
+                    )}
+                  </td>
+                  <td>
+                    {expense.currentStatus === 'EmployeeRequested'
+                      ? 'HR Rejected'
+                      : expense.currentStatus === 'HRApproved'
+                      ? 'Director Rejected'
+                      : expense.currentStatus === 'DirectorApproved'
+                      ? 'FinanceDepartment Rejected'
+                      : 'FinanceDepartment Approved'}
+                  </td>
                   <td>
                     {expense.status === 'Rejected' ? (
                       expense.rejectionReason
                     ) : (
-                      <span style={{ color: '#4cbf41' }}>Approved by you</span>
+                      <span style={{ color: '#58c445' }}>Approved</span>
                     )}
                   </td>
                   <td>{expense.amount}</td>
@@ -91,7 +107,7 @@ const HistoryScreen = () => {
                   <td>{formatDate(expense.date)}</td>
                   <td align="center">
                     <RiDeleteBin2Fill
-                      color="red"
+                      color="#FF0000"
                       size={'1.5em'}
                       onClick={() => handleDelete(expense._id)}
                       style={{ cursor: 'pointer' }}

@@ -2,14 +2,18 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 import { useCreateExpenseMutation } from '../slices/expensesApiSlice';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
 
 const ExpenseForm = () => {
-  const [empName, setEmpName] = useState('');
-  const [empId, setEmpId] = useState('');
+  const { userInfo } = useSelector((state) => state.auth);
+  const [empName, setEmpName] = useState(
+    userInfo.firstName + ' ' + userInfo.lastName
+  );
+  const [empId, setEmpId] = useState(userInfo.userId);
   const [projName, setProjName] = useState('');
   const [projId, setProjId] = useState('');
   const [billProof, setbillProof] = useState('');
@@ -45,7 +49,7 @@ const ExpenseForm = () => {
     <FormContainer>
       <h1>Add Expense</h1>
       <Form onSubmit={submitHandler}>
-        <Form.Group className="my-2" controlId="empName">
+        {/* <Form.Group className="my-2" controlId="empName">
           <Form.Label>Employee Name</Form.Label>
           <Form.Control
             type="name"
@@ -65,7 +69,7 @@ const ExpenseForm = () => {
             onChange={(e) => setEmpId(e.target.value)}
             required
           ></Form.Control>
-        </Form.Group>
+        </Form.Group> */}
 
         <Form.Group className="my-2" controlId="projName">
           <Form.Label>Project Name</Form.Label>

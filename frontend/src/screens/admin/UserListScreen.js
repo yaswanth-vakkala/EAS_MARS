@@ -94,9 +94,9 @@ const UserListScreen = () => {
                 </td>
                 <td>
                   {user.userType === 'Admin' ? (
-                    <FaCheck style={{ color: 'green' }} />
+                    <FaCheck style={{ color: '#00FF00' }} />
                   ) : (
-                    <FaTimes style={{ color: 'red' }} />
+                    <FaTimes style={{ color: '#FF0000' }} />
                   )}
                 </td>
                 <td>{user.userId}</td>
@@ -114,7 +114,7 @@ const UserListScreen = () => {
                       className="btn-sm"
                       onClick={() => deleteHandler(user._id)}
                     >
-                      <FaTrash style={{ color: 'white' }} />
+                      <FaTrash style={{ color: '#FFFFFF' }} />
                     </Button>
                   </>
                 </td>

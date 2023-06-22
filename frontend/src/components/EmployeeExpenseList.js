@@ -32,6 +32,7 @@ function ExpenseList(props) {
           <th>Project Name</th>
           <th>Project Id</th>
           <th>Bill Proof</th>
+          <th>Current Level</th>
           <th>Status</th>
           <th>Amount</th>
           <th>Description</th>
@@ -47,13 +48,16 @@ function ExpenseList(props) {
             <td>{expense.projName}</td>
             <td>{expense.projId}</td>
             <td>{expense.billProof}</td>
-            <td>{expense.status}</td>
+            <td>{expense.currentStatus}</td>
+            <td>
+              <span style={{ color: '#0000FF' }}>{expense.status}</span>
+            </td>
             <td>{expense.amount}</td>
             <td>{expense.description}</td>
             <td>{formatDate(expense.date)}</td>
             <td align="center">
               <RiDeleteBin2Fill
-                color="red"
+                color="#FF0000"
                 size={'1.5em'}
                 onClick={() => handleDelete(expense._id)}
                 style={{ cursor: 'pointer' }}

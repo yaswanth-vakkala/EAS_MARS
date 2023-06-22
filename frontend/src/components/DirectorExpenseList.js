@@ -50,7 +50,6 @@ const DirectorExpenseList = (props) => {
           <th>Project Name</th>
           <th>Project Id</th>
           <th>Bill Proof</th>
-          <th>Status</th>
           <th>Amount</th>
           <th>Description</th>
           <th>Date</th>
@@ -65,7 +64,6 @@ const DirectorExpenseList = (props) => {
             <td>{expense.projName}</td>
             <td>{expense.projId}</td>
             <td>{expense.billProof}</td>
-            <td>{expense.status}</td>
             <td>{expense.amount}</td>
             <td>{expense.description}</td>
             <td>{formatDate(expense.date)}</td>
@@ -77,13 +75,13 @@ const DirectorExpenseList = (props) => {
             >
               <AiOutlineCheck
                 size={'1.7em'}
-                color="green"
+                color="#00FF00"
                 onClick={() => handleApprove(expense)}
                 style={{ cursor: 'pointer' }}
               />
               <AiOutlineClose
                 size={'1.7em'}
-                color="red"
+                color="#FF0000"
                 onClick={() => handleReject(expense)}
                 style={{ cursor: 'pointer' }}
               />
