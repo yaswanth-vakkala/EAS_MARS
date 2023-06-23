@@ -23,6 +23,7 @@ import AdminRoute from './components/AdminRoute';
 import UserListScreen from './screens/admin/UserListScreen';
 import UserEditScreen from './screens/admin/UserEditScreen';
 import UserFormScreen from './screens/admin/UserFormScreen';
+import UserPasswordEditScreen from './screens/admin/UserPasswordEditScreen';
 import EmployeeRoute from './components/EmployeeRoute';
 import ExpenseForm from './components/ExpenseForm';
 import HistoryScreen from './screens/HistoryScreen';
@@ -82,6 +83,10 @@ const router = createBrowserRouter(
           element={<UserListScreen />}
         />
         <Route path="/admin/addUser" element={<UserFormScreen />} />
+        <Route
+          path="/admin/user/:id/editPassword"
+          element={<UserPasswordEditScreen />}
+        />
         <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
 
         {/* <Route path="/admin/orderlist" element={<OrderListScreen />} />

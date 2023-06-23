@@ -61,7 +61,7 @@ const UserEditScreen = () => {
 
   return (
     <>
-      <Link to="/admin/userlist" className="btn btn-light my-3">
+      <Link to="/admin/userlist" className="btn btn-light">
         Go Back
       </Link>
       <FormContainer>
@@ -138,6 +138,12 @@ const UserEditScreen = () => {
             <Button type="submit" variant="primary">
               Update
             </Button>
+            <Link
+              to={`/admin/user/${user._id}/editPassword`}
+              className="btn btn-warning mx-4 my-3"
+            >
+              Edit Password
+            </Link>
           </Form>
         )}
       </FormContainer>
