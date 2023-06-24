@@ -15,8 +15,9 @@ const DirectorHistory = (props) => {
   async function handleDelete(expense_id) {
     if (!window.confirm('Are you sure to delete the Expense?')) return;
     try {
-      const res = await deleteExpenese(expense_id);
+      await deleteExpenese(expense_id);
       props.refetch();
+      toast.success('Expense Deleted Successfully');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }

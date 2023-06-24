@@ -33,6 +33,7 @@ const HistoryScreen = () => {
       await deleteExpenese(expense_id);
       refetch();
       navigate('/user/history');
+      toast.success('Expense Deleted Successfully');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
@@ -81,7 +82,7 @@ const HistoryScreen = () => {
                     {expense.status === 'Reimbursed' ? (
                       <span style={{ color: '#58c445' }}>Reimbursed</span>
                     ) : expense.status === 'InProcess' ? (
-                      <span style={{color: '#0000FF'}}>InProcess</span>
+                      <span style={{ color: '#0000FF' }}>InProcess</span>
                     ) : (
                       <span style={{ color: '#FF0000' }}>Rejected</span>
                     )}

@@ -33,11 +33,11 @@ const ProfileScreen = () => {
             Edit Profile
           </Button>
         </Link>
-        <Link to={'/user/editPassword'}>
-          <Button variant="primary" className="my-2 mx-2">
+        {/* <Link to={`/user/${userInfo._id}/editPassword`}>
+          <Button variant="warning" className="my-2 mx-2">
             Edit Password
           </Button>
-        </Link>
+        </Link> */}
       </div>
     </>
   );

@@ -167,10 +167,7 @@ const getExpenses = asyncHandler(async (req, res) => {
       status: 'InProcess',
     })
       .skip(pageSize * (page - 1))
-      .limit(pageSize)
-      .sort({
-        createdAt: -1,
-      });
+      .limit(pageSize);
     res
       .status(200)
       .json({ expenses, page, pages: Math.ceil(count / pageSize) });
@@ -185,10 +182,7 @@ const getExpenses = asyncHandler(async (req, res) => {
       status: 'InProcess',
     })
       .skip(pageSize * (page - 1))
-      .limit(pageSize)
-      .sort({
-        createdAt: -1,
-      });
+      .limit(pageSize);
     res
       .status(200)
       .json({ expenses, page, pages: Math.ceil(count / pageSize) });
@@ -204,9 +198,6 @@ const getExpenses = asyncHandler(async (req, res) => {
     })
       .skip(pageSize * (page - 1))
       .limit(pageSize)
-      .sort({
-        createdAt: -1,
-      });
     res
       .status(200)
       .json({ expenses, page, pages: Math.ceil(count / pageSize) });

@@ -19,6 +19,7 @@ const HRExpenseList = (props) => {
     try {
       await updateExpense(data);
       props.refetch();
+      toast.success('Expense Approved Successfully');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
@@ -35,6 +36,7 @@ const HRExpenseList = (props) => {
     try {
       await updateExpense(data);
       props.refetch();
+      toast.success('Expense Rejected Successfully');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }

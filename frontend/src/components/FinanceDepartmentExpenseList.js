@@ -23,6 +23,7 @@ const FinanceDepartmentExpenseList = (props) => {
     try {
       await updateExpense(data);
       props.refetch();
+      toast.success('Expense Reimbursed Successfully');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
@@ -39,6 +40,7 @@ const FinanceDepartmentExpenseList = (props) => {
     try {
       await updateExpense(data);
       props.refetch();
+      toast.success('Expense Rejected Successfully');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }

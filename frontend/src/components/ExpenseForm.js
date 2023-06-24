@@ -28,6 +28,11 @@ const ExpenseForm = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     let amount = Math.round(Number(cost) * 100) / 100;
+    let dt = new Date();
+    if (date.slice(-2) > dt.getDate()) {
+      toast.error("Please don't select future date");
+      return;
+    }
     try {
       await createExpense({
         empName,
@@ -40,6 +45,7 @@ const ExpenseForm = () => {
         date,
       });
       navigate('/');
+      toast.success('Expense Created Successfully');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }

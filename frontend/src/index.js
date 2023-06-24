@@ -29,6 +29,8 @@ import ExpenseForm from './components/ExpenseForm';
 import HistoryScreen from './screens/HistoryScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import UserProfileUpdateScreen from './screens/UserProfileUpdateScreen';
+import HigherUserRoute from './components/HigherUserRoute';
+import ExpenseReportScreen from './screens/ExpenseReportScreen';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -66,6 +68,10 @@ const router = createBrowserRouter(
       {/* Employee Routes */}
       <Route path="" element={<EmployeeRoute />}>
         <Route path="/addExpense" element={<ExpenseForm />} />
+      </Route>
+      {/* Higher User Route */}
+      <Route path="" element={<HigherUserRoute />}>
+        <Route path="/expense/report" element={<ExpenseReportScreen />} />
       </Route>
       {/* Admin users */}
       <Route path="" element={<AdminRoute />}>

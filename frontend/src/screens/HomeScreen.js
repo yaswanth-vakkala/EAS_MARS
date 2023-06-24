@@ -15,7 +15,6 @@ const HomeScreen = () => {
     pageNumber,
   });
   const { userInfo } = useSelector((state) => state.auth);
-
   return (
     <>
       {userInfo.userType === 'Employee' && (
