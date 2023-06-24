@@ -25,6 +25,17 @@ const HistoryScreen = () => {
     return dayjs(date).format('DD/MM/YYYY');
   }
 
+  let index = 0;
+  function findIndex(i) {
+    let row_index = i + 1;
+    let serNum =
+      process.env.REACT_APP_EXPENSES_HISTORY_PAGINATION_LIMIT *
+        (data.page - 1) +
+      row_index;
+    index++;
+    return serNum;
+  }
+
   const [deleteExpenese, { isLoading: loading }] = useDeleteExpenseMutation();
 
   async function handleDelete(expense_id) {
@@ -55,7 +66,7 @@ const HistoryScreen = () => {
           <Table hover bordered striped responsive>
             <thead>
               <tr style={{ textAlign: 'center' }}>
-                {/* <th>#</th> */}
+                <th>S.No</th>
                 <th>Employee Name</th>
                 <th>Employee Id</th>
                 <th>Project Name</th>
@@ -64,15 +75,16 @@ const HistoryScreen = () => {
                 <th>Status</th>
                 <th>Approval Level</th>
                 <th>Rejection Reason</th>
-                <th>Amount</th>
+                <th>Amount(₹)</th>
                 <th>Description</th>
                 <th>Date</th>
-                <th>Action</th>
+                {userInfo.userType !== 'Employee' && <th>Action</th>}
               </tr>
             </thead>
             <tbody>
               {data.expenses.map((expense) => (
                 <tr key={expense._id} style={{ textAlign: 'center' }}>
+                  <td style={{ color: '#000000' }}>{findIndex(index)}</td>
                   <td>{expense.empName}</td>
                   <td>{expense.empId}</td>
                   <td>{expense.projName}</td>
@@ -106,14 +118,16 @@ const HistoryScreen = () => {
                   <td>{expense.amount}</td>
                   <td>{expense.description}</td>
                   <td>{formatDate(expense.date)}</td>
-                  <td align="center">
-                    <RiDeleteBin2Fill
-                      color="#FF0000"
-                      size={'1.5em'}
-                      onClick={() => handleDelete(expense._id)}
-                      style={{ cursor: 'pointer' }}
-                    />
-                  </td>
+                  {userInfo.userType !== 'Employee' && (
+                    <td align="center">
+                      <RiDeleteBin2Fill
+                        color="#FF0000"
+                        size={'1.5em'}
+                        onClick={() => handleDelete(expense._id)}
+                        style={{ cursor: 'pointer' }}
+                      />
+                    </td>
+                  )}
                 </tr>
               ))}
               <tr style={{ all: 'initial' }}>

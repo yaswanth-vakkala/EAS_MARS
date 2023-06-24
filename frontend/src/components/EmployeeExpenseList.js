@@ -7,6 +7,15 @@ import { useDeleteExpenseMutation } from '../slices/expensesApiSlice';
 import Paginate from '../components/Paginate';
 
 function ExpenseList(props) {
+  let index = 0;
+  function findIndex(i) {
+    let row_index = i + 1;
+    let serNum =
+      process.env.REACT_APP_EXPENSES_PAGINATION_LIMIT * (props.data.page - 1) +
+      row_index;
+    index++;
+    return serNum;
+  }
   function formatDate(date) {
     return dayjs(date).format('DD/MM/YYYY');
   }
@@ -27,7 +36,7 @@ function ExpenseList(props) {
     <Table hover bordered striped responsive>
       <thead>
         <tr style={{ textAlign: 'center' }}>
-          {/* <th>#</th> */}
+          <th>S.No</th>
           <th>Employee Name</th>
           <th>Employee Id</th>
           <th>Project Name</th>
@@ -35,7 +44,7 @@ function ExpenseList(props) {
           <th>Bill Proof</th>
           <th>Current Level</th>
           <th>Status</th>
-          <th>Amount</th>
+          <th>Amount(₹)</th>
           <th>Description</th>
           <th>Date</th>
           <th>Action</th>
@@ -44,6 +53,7 @@ function ExpenseList(props) {
       <tbody>
         {props.data.expenses.map((expense) => (
           <tr key={expense._id} style={{ textAlign: 'center' }}>
+            <td>{findIndex(index)}</td>
             <td>{expense.empName}</td>
             <td>{expense.empId}</td>
             <td>{expense.projName}</td>

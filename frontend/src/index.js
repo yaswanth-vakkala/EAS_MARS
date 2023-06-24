@@ -89,11 +89,11 @@ const router = createBrowserRouter(
           element={<UserListScreen />}
         />
         <Route path="/admin/addUser" element={<UserFormScreen />} />
+        <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
         <Route
           path="/admin/user/:id/editPassword"
           element={<UserPasswordEditScreen />}
         />
-        <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
 
         {/* <Route path="/admin/orderlist" element={<OrderListScreen />} />
         <Route path="/admin/productlist" element={<ProductListScreen />} />

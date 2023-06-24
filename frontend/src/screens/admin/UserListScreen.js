@@ -23,6 +23,16 @@ const UserListScreen = () => {
 
   const [deleteUser] = useDeleteUserMutation();
 
+  let index = 0;
+  function findIndex(i) {
+    let row_index = i + 1;
+    let serNum =
+      process.env.REACT_APP_USERS_PAGINATION_LIMIT * (data.page - 1) +
+      row_index;
+    index++;
+    return serNum;
+  }
+
   const deleteHandler = async (id) => {
     if (window.confirm('Are you sure')) {
       try {
@@ -75,6 +85,7 @@ const UserListScreen = () => {
         <Table striped bordered hover responsive className="table-sm">
           <thead>
             <tr style={{ textAlign: 'center' }}>
+              <th>S.No</th>
               <th>Database Id</th>
               <th>Name</th>
               <th>Email</th>
@@ -87,6 +98,7 @@ const UserListScreen = () => {
           <tbody>
             {data.users.map((user) => (
               <tr key={user._id} style={{ textAlign: 'center' }}>
+                <td>{findIndex(index)}</td>
                 <td>{user._id}</td>
                 <td>{user.firstName + ' ' + user.lastName}</td>
                 <td>

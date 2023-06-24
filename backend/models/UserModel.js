@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema(
       required: ['employee Id field is required'],
       unique: true,
     },
+    amount: {
+      type: String,
+      default: '0',
+    },
     userType: {
       type: String,
       enum: ['Admin', 'Employee', 'HR', 'Director', 'FinanceDepartment'],

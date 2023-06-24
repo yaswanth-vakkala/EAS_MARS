@@ -20,6 +20,7 @@ const loginUser = asyncHandler(async (req, res) => {
       email: user.email,
       userType: user.userType,
       userId: user.userId,
+      amount: user.amount,
     });
   } else {
     res.status(401);
@@ -59,6 +60,7 @@ const registerUser = asyncHandler(async (req, res) => {
       email: user.email,
       userType: user.userType,
       userId: user.userId,
+      amount: user.amount,
     });
   } else {
     res.status(400);
@@ -120,6 +122,8 @@ const getUserProfile = asyncHandler(async (req, res) => {
       lastName: user.lastName,
       email: user.email,
       userType: user.userType,
+      amount: user.amount,
+      userId: user.userId,
     });
   } else {
     res.status(404);
