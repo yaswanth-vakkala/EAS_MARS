@@ -32,7 +32,7 @@ const ExpenseSearchBox = () => {
         placeholder={
           userInfo.userType === 'Employee'
             ? 'Search expenses using description...'
-            : 'Search expenses using description'
+            : 'Search expenses using employee Id...'
         }
         className="mr-sm-2 ml-sm-5"
       ></Form.Control>

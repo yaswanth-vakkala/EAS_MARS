@@ -36,6 +36,9 @@ const getExpenseHistory = asyncHandler(async (req, res) => {
       .status(200)
       .json({ expenses, page, pages: Math.ceil(count / pageSize) });
   } else if (req.user.userType === 'HR') {
+    const keyword = req.query.keyword
+      ? { empId: { $regex: req.query.keyword, $options: 'i' } }
+      : {};
     let count = await Expense.find({
       $or: [
         { currentStatus: 'EmployeeRequested', status: 'Rejected' },
@@ -76,6 +79,9 @@ const getExpenseHistory = asyncHandler(async (req, res) => {
       .status(200)
       .json({ expenses, page, pages: Math.ceil(count / pageSize) });
   } else if (req.user.userType === 'Director') {
+    const keyword = req.query.keyword
+      ? { empId: { $regex: req.query.keyword, $options: 'i' } }
+      : {};
     let count = await Expense.find({
       $or: [
         {
@@ -114,6 +120,9 @@ const getExpenseHistory = asyncHandler(async (req, res) => {
       .status(200)
       .json({ expenses, page, pages: Math.ceil(count / pageSize) });
   } else if (req.user.userType === 'FinanceDepartment') {
+    const keyword = req.query.keyword
+      ? { empId: { $regex: req.query.keyword, $options: 'i' } }
+      : {};
     let count = await Expense.find({
       currentStatus: {
         $in: ['DirectorApproved', 'FinanceDepartmentApproved'],
@@ -173,6 +182,9 @@ const getExpenses = asyncHandler(async (req, res) => {
       .status(200)
       .json({ expenses, page, pages: Math.ceil(count / pageSize) });
   } else if (req.user.userType === 'HR') {
+    const keyword = req.query.keyword
+      ? { empId: { $regex: req.query.keyword, $options: 'i' } }
+      : {};
     let count = await Expense.find({
       currentStatus: 'EmployeeRequested',
       status: 'InProcess',
@@ -190,6 +202,9 @@ const getExpenses = asyncHandler(async (req, res) => {
       .status(200)
       .json({ expenses, page, pages: Math.ceil(count / pageSize) });
   } else if (req.user.userType === 'Director') {
+    const keyword = req.query.keyword
+      ? { empId: { $regex: req.query.keyword, $options: 'i' } }
+      : {};
     let count = await Expense.find({
       currentStatus: 'HRApproved',
       status: 'InProcess',
@@ -207,6 +222,9 @@ const getExpenses = asyncHandler(async (req, res) => {
       .status(200)
       .json({ expenses, page, pages: Math.ceil(count / pageSize) });
   } else if (req.user.userType === 'FinanceDepartment') {
+    const keyword = req.query.keyword
+      ? { empId: { $regex: req.query.keyword, $options: 'i' } }
+      : {};
     let count = await Expense.find({
       currentStatus: 'DirectorApproved',
       status: 'InProcess',

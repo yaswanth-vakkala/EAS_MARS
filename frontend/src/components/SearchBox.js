@@ -39,9 +39,9 @@ const SearchBox = () => {
         onChange={(e) => setKeyword(e.target.value)}
         value={keyword}
         placeholder={
-          userInfo.userType === 'Admin'
-            ? 'Search Users using Employee Id...'
-            : 'Search Expenses using description...'
+          userInfo.userType === 'Employee'
+            ? 'Search Expenses using description...'
+            : 'Search Users using Employee Id...'
         }
         className="mr-sm-2 ml-sm-5"
       ></Form.Control>
