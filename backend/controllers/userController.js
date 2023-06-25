@@ -34,6 +34,12 @@ const loginUser = asyncHandler(async (req, res) => {
 const registerUser = asyncHandler(async (req, res) => {
   const { firstName, lastName, email, password, userId, userType } = req.body;
 
+  let emailVars = email.split('@');
+  if (emailVars[emailVars.length - 1] !== 'mars-techs.com') {
+    res.status(400);
+    throw new Error('Only authorized for Mars Telecom employees');
+  }
+
   const userExists = await User.findOne({ email });
 
   if (userExists) {
@@ -54,13 +60,13 @@ const registerUser = asyncHandler(async (req, res) => {
     generateToken(res, user._id);
 
     res.status(201).json({
-      _id: user._id,
+      // _id: user._id,
       firstName: firstName,
       lastName: user.lastName,
       email: user.email,
-      userType: user.userType,
       userId: user.userId,
       amount: user.amount,
+      userType: user.userType,
     });
   } else {
     res.status(400);
@@ -165,7 +171,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @route   GET /api/users
 // @access  Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
-  const pageSize = process.env.USERS_PAGINATION_LIMIT || 12;
+  const pageSize = process.env.USERS_PAGINATION_LIMIT || 10;
   const page = Number(req.query.pageNumber) || 1;
   const keyword = req.query.keyword
     ? { userId: { $regex: req.query.keyword, $options: 'i' } }

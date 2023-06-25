@@ -1,6 +1,6 @@
-import { Row, Col, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { useGetExpensesQuery } from '../slices/expensesApiSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
@@ -10,21 +10,21 @@ import DirectorExpenseList from '../components/DirectorExpenseList';
 import FinanceDepartmentExpenseList from '../components/FinanceDepartmentExpenseList';
 
 const HomeScreen = () => {
-  const { pageNumber } = useParams();
+  const { pageNumber, keyword } = useParams();
   const { data, refetch, isLoading, error } = useGetExpensesQuery({
+    keyword,
     pageNumber,
   });
   const { userInfo } = useSelector((state) => state.auth);
   return (
     <>
-      {userInfo.userType === 'Employee' && (
+      {userInfo.userType === 'Employee' && !keyword && (
         <Link to={'/addExpense'}>
           <Button variant="primary" className="my-2">
             Add Expense
           </Button>
         </Link>
       )}
-
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -35,18 +35,34 @@ const HomeScreen = () => {
         <Message variant="danger">No Expenses Found</Message>
       ) : (
         <>
-          <h1>Expenses List</h1>
+          <h1>Expense List</h1>
           {userInfo.userType === 'Employee' && (
-            <EmployeeExpenseList data={data} refetch={refetch} />
+            <EmployeeExpenseList
+              data={data}
+              refetch={refetch}
+              keyword={keyword ? keyword : ''}
+            />
           )}
           {userInfo.userType === 'HR' && (
-            <HRExpenseList data={data} refetch={refetch} />
+            <HRExpenseList
+              data={data}
+              refetch={refetch}
+              keyword={keyword ? keyword : ''}
+            />
           )}
           {userInfo.userType === 'Director' && (
-            <DirectorExpenseList data={data} refetch={refetch} />
+            <DirectorExpenseList
+              data={data}
+              refetch={refetch}
+              keyword={keyword ? keyword : ''}
+            />
           )}
           {userInfo.userType === 'FinanceDepartment' && (
-            <FinanceDepartmentExpenseList data={data} refetch={refetch} />
+            <FinanceDepartmentExpenseList
+              data={data}
+              refetch={refetch}
+              keyword={keyword ? keyword : ''}
+            />
           )}
         </>
       )}

@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-const SearchBox = () => {
+const ExpenseSearchBox = () => {
   const navigate = useNavigate();
   const { keyword: urlKeyword } = useParams();
   const { userInfo } = useSelector((state) => state.auth);
@@ -14,20 +14,11 @@ const SearchBox = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (userInfo.userType === 'Admin') {
-      if (keyword) {
-        navigate(`/admin/userlist/search/${keyword.trim()}`);
-        setKeyword('');
-      } else {
-        navigate('/admin/userlist');
-      }
+    if (keyword) {
+      navigate(`/search/${keyword.trim()}`);
+      setKeyword('');
     } else {
-      if (keyword) {
-        navigate(`/user/history/search/${keyword.trim()}`);
-        setKeyword('');
-      } else {
-        navigate('/user/history');
-      }
+      navigate('/');
     }
   };
 
@@ -39,9 +30,9 @@ const SearchBox = () => {
         onChange={(e) => setKeyword(e.target.value)}
         value={keyword}
         placeholder={
-          userInfo.userType === 'Admin'
-            ? 'Search Users using Employee Id...'
-            : 'Search Expenses using description...'
+          userInfo.userType === 'Employee'
+            ? 'Search expenses using description...'
+            : 'Search expenses using description'
         }
         className="mr-sm-2 ml-sm-5"
       ></Form.Control>
@@ -52,4 +43,4 @@ const SearchBox = () => {
   );
 };
 
-export default SearchBox;
+export default ExpenseSearchBox;

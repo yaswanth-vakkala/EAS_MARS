@@ -16,7 +16,6 @@ const RegisterScreen = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [userId, setUserId] = useState('');
-  const [userType, setUserType] = useState('null');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -37,9 +36,9 @@ const RegisterScreen = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
-    if (userType === 'null') {
-      toast.error('Select valid userType');
+    let emailVars = email.split('@');
+    if (emailVars[emailVars.length - 1] !== 'mars-techs.com') {
+      toast.error('Only authorized for MARS Telecom employees');
     } else if (password !== confirmPassword) {
       toast.error('Passwords do not match');
     } else {
@@ -49,8 +48,8 @@ const RegisterScreen = () => {
           lastName,
           email,
           userId,
-          userType,
           password,
+          userType: 'Employee',
         }).unwrap();
         dispatch(setCredentials({ ...res }));
         navigate(redirect);
@@ -98,7 +97,7 @@ const RegisterScreen = () => {
         </Form.Group>
 
         <Form.Group className="my-2" controlId="userId">
-          <Form.Label>User Id</Form.Label>
+          <Form.Label>Employee Id</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter User Id"
@@ -106,23 +105,6 @@ const RegisterScreen = () => {
             onChange={(e) => setUserId(e.target.value)}
             required
           ></Form.Control>
-        </Form.Group>
-
-        <Form.Group className="my-2" controlId="userType">
-          <Form.Label>userType</Form.Label>
-          <Form.Select
-            as="select"
-            value={userType}
-            onChange={(e) => setUserType(e.target.value)}
-            required
-          >
-            <option value="null">---</option>
-            <option value="Employee">Employee</option>
-            <option value="HR">HR</option>
-            <option value="Director">Director</option>
-            <option value="FinanceDepartment">Finance Department</option>
-            <option value="Admin">Admin</option>
-          </Form.Select>
         </Form.Group>
 
         <Form.Group className="my-2" controlId="password">

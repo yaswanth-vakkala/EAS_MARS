@@ -1,10 +1,10 @@
 import { useSelector } from 'react-redux';
-import { Table } from 'react-bootstrap';
+import { Table, Col } from 'react-bootstrap';
 import dayjs from 'dayjs';
 import { RiDeleteBin2Fill } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   useGetExpensesHistoryQuery,
   useDeleteExpenseMutation,
@@ -12,11 +12,13 @@ import {
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
+import SearchBox from '../components/SearchBox';
 
 const HistoryScreen = () => {
   const navigate = useNavigate();
-  const { pageNumber } = useParams();
+  const { pageNumber, keyword } = useParams();
   const { data, refetch, isLoading, error } = useGetExpensesHistoryQuery({
+    keyword,
     pageNumber,
   });
   const { userInfo } = useSelector((state) => state.auth);
@@ -67,7 +69,15 @@ const HistoryScreen = () => {
         <Message variant="danger">No Expenses History found</Message>
       ) : (
         <>
+          {keyword && (
+            <Link to="/user/history" className="btn btn-light my-2">
+              Go Back
+            </Link>
+          )}
           <h1>Expenses History</h1>
+          <Col className="my-2" md="6">
+            <SearchBox />
+          </Col>
           <Table hover bordered striped responsive>
             <thead>
               <tr style={{ textAlign: 'center' }}>
@@ -140,7 +150,9 @@ const HistoryScreen = () => {
           <Paginate
             pages={data.pages}
             page={data.page}
-            keyword={'user/history'}
+            keyword={
+              keyword ? 'user/history/search/' + keyword : 'user/history'
+            }
           />
         </>
       )}

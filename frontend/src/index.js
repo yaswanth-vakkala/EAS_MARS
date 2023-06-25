@@ -45,9 +45,22 @@ const router = createBrowserRouter(
         <Route path="/user/history" element={<HistoryScreen />} />
 
         {/* <Route path="/search/:keyword" element={<HomeScreen />} /> */}
+        <Route path="search/:keyword" element={<HomeScreen />} />
         <Route path="page/:pageNumber" element={<HomeScreen />} />
         <Route
+          path="search/:keyword/page/:pageNumber"
+          element={<HomeScreen />}
+        />
+        <Route
+          path="user/history/search/:keyword"
+          element={<HistoryScreen />}
+        />
+        <Route
           path="user/history/page/:pageNumber"
+          element={<HistoryScreen />}
+        />
+        <Route
+          path="user/history/search/:keyword/page/:pageNumber"
           element={<HistoryScreen />}
         />
         <Route

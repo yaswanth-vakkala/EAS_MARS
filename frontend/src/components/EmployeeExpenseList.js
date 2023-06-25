@@ -1,10 +1,12 @@
-import Table from 'react-bootstrap/Table';
+import { Table, Col } from 'react-bootstrap';
 import dayjs from 'dayjs';
 import { RiDeleteBin2Fill } from 'react-icons/ri';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 import { useDeleteExpenseMutation } from '../slices/expensesApiSlice';
 import Paginate from '../components/Paginate';
+import ExpenseSearchBox from './ExpenseSearchBox';
 
 function ExpenseList(props) {
   let index = 0;
@@ -34,6 +36,14 @@ function ExpenseList(props) {
   }
   return (
     <>
+      {props.keyword && (
+        <Link to="/" className="btn btn-light my-2">
+          Go Back
+        </Link>
+      )}
+      <Col className="my-2" md="6">
+        <ExpenseSearchBox />
+      </Col>
       <Table hover bordered striped responsive>
         <thead>
           <tr style={{ textAlign: 'center' }}>
@@ -79,7 +89,11 @@ function ExpenseList(props) {
           ))}
         </tbody>
       </Table>
-      <Paginate pages={props.data.pages} page={props.data.page} />
+      <Paginate
+        pages={props.data.pages}
+        page={props.data.page}
+        keyword={props.keyword ? 'search/' + props.keyword : ''}
+      />
     </>
   );
 }

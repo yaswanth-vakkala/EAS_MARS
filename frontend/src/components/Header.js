@@ -44,9 +44,12 @@ const Header = () => {
                     <LinkContainer to="/user/profile">
                       <NavDropdown.Item>Profile</NavDropdown.Item>
                     </LinkContainer>
-                    <LinkContainer to="user/history">
-                      <NavDropdown.Item>Expenses History</NavDropdown.Item>
-                    </LinkContainer>
+                    {userInfo && userInfo.userType !== 'Admin' && (
+                      <LinkContainer to="user/history">
+                        <NavDropdown.Item>Expenses History</NavDropdown.Item>
+                      </LinkContainer>
+                    )}
+
                     {/* Higher User Links */}
                     {userInfo && userInfo.userType !== 'Employee' && (
                       <LinkContainer to="/expense/report">

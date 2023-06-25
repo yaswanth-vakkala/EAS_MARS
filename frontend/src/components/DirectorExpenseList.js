@@ -1,10 +1,12 @@
-import Table from 'react-bootstrap/Table';
+import { Table, Col } from 'react-bootstrap';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 import { AiOutlineClose, AiOutlineCheck } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
 
 import { useUpdateExpenseMutation } from '../slices/expensesApiSlice';
 import Paginate from '../components/Paginate';
+import ExpenseSearchBox from './ExpenseSearchBox';
 
 const DirectorExpenseList = (props) => {
   let index = 0;
@@ -24,7 +26,6 @@ const DirectorExpenseList = (props) => {
 
   async function handleApprove(expense) {
     if (!window.confirm('Are you sure to Accept the Expense?')) return;
-    
     const data = { ...expense, currentStatus: 'DirectorApproved' };
     try {
       await updateExpense(data);
@@ -54,6 +55,14 @@ const DirectorExpenseList = (props) => {
 
   return (
     <>
+      {props.keyword && (
+        <Link to="/" className="btn btn-light my-2">
+          Go Back
+        </Link>
+      )}
+      <Col className="my-2" md="6">
+        <ExpenseSearchBox />
+      </Col>
       <Table hover bordered striped responsive>
         <thead>
           <tr style={{ textAlign: 'center' }}>
@@ -104,7 +113,11 @@ const DirectorExpenseList = (props) => {
           ))}
         </tbody>
       </Table>
-      <Paginate pages={props.data.pages} page={props.data.page} />
+      <Paginate
+        pages={props.data.pages}
+        page={props.data.page}
+        keyword={props.keyword ? 'search/' + props.keyword : ''}
+      />
     </>
   );
 };

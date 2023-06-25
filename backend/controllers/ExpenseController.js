@@ -7,6 +7,9 @@ import Expense from '../models/ExpenseModel.js';
 const getExpenseHistory = asyncHandler(async (req, res) => {
   const pageSize = process.env.EXPENSES_HISTORY_PAGINATION_LIMIT || 12;
   const page = Number(req.query.pageNumber) || 1;
+  const keyword = req.query.keyword
+    ? { description: { $regex: req.query.keyword, $options: 'i' } }
+    : {};
 
   if (req.user.userType === 'Employee') {
     let count = await Expense.find({
@@ -14,6 +17,7 @@ const getExpenseHistory = asyncHandler(async (req, res) => {
       status: {
         $in: ['Reimbursed', 'Rejected'],
       },
+      ...keyword,
     });
     count = count.length;
     const expenses = await Expense.find({
@@ -21,6 +25,7 @@ const getExpenseHistory = asyncHandler(async (req, res) => {
       status: {
         $in: ['Reimbursed', 'Rejected'],
       },
+      ...keyword,
     })
       .skip(pageSize * (page - 1))
       .limit(pageSize)
@@ -44,6 +49,7 @@ const getExpenseHistory = asyncHandler(async (req, res) => {
         },
         { currentStatus: 'FinanceDepartmentApproved', status: 'Reimbursed' },
       ],
+      ...keyword,
     });
     count = count.length;
     const expenses = await Expense.find({
@@ -59,6 +65,7 @@ const getExpenseHistory = asyncHandler(async (req, res) => {
         },
         { currentStatus: 'FinanceDepartmentApproved', status: 'Reimbursed' },
       ],
+      ...keyword,
     })
       .skip(pageSize * (page - 1))
       .limit(pageSize)
@@ -81,6 +88,7 @@ const getExpenseHistory = asyncHandler(async (req, res) => {
         },
         { currentStatus: 'FinanceDepartmentApproved', status: 'Reimbursed' },
       ],
+      ...keyword,
     });
     count = count.length;
     const expenses = await Expense.find({
@@ -95,6 +103,7 @@ const getExpenseHistory = asyncHandler(async (req, res) => {
         },
         { currentStatus: 'FinanceDepartmentApproved', status: 'Reimbursed' },
       ],
+      ...keyword,
     })
       .skip(pageSize * (page - 1))
       .limit(pageSize)
@@ -110,6 +119,7 @@ const getExpenseHistory = asyncHandler(async (req, res) => {
         $in: ['DirectorApproved', 'FinanceDepartmentApproved'],
       },
       status: { $in: ['Reimbursed', 'Rejected'] },
+      ...keyword,
     });
     count = count.length;
     const expenses = await Expense.find({
@@ -117,6 +127,7 @@ const getExpenseHistory = asyncHandler(async (req, res) => {
         $in: ['DirectorApproved', 'FinanceDepartmentApproved'],
       },
       status: { $in: ['Reimbursed', 'Rejected'] },
+      ...keyword,
     })
       .skip(pageSize * (page - 1))
       .limit(pageSize)
@@ -138,15 +149,20 @@ const getExpenseHistory = asyncHandler(async (req, res) => {
 const getExpenses = asyncHandler(async (req, res) => {
   const pageSize = process.env.EXPENSES_PAGINATION_LIMIT || 12;
   const page = Number(req.query.pageNumber) || 1;
+  const keyword = req.query.keyword
+    ? { description: { $regex: req.query.keyword, $options: 'i' } }
+    : {};
   if (req.user.userType === 'Employee') {
     let count = await Expense.find({
       user: req.user._id,
       status: 'InProcess',
+      ...keyword,
     });
     count = count.length;
     const expenses = await Expense.find({
       user: req.user._id,
       status: 'InProcess',
+      ...keyword,
     })
       .skip(pageSize * (page - 1))
       .limit(pageSize)
@@ -160,11 +176,13 @@ const getExpenses = asyncHandler(async (req, res) => {
     let count = await Expense.find({
       currentStatus: 'EmployeeRequested',
       status: 'InProcess',
+      ...keyword,
     });
     count = count.length;
     const expenses = await Expense.find({
       currentStatus: 'EmployeeRequested',
       status: 'InProcess',
+      ...keyword,
     })
       .skip(pageSize * (page - 1))
       .limit(pageSize);
@@ -175,11 +193,13 @@ const getExpenses = asyncHandler(async (req, res) => {
     let count = await Expense.find({
       currentStatus: 'HRApproved',
       status: 'InProcess',
+      ...keyword,
     });
     count = count.length;
     const expenses = await Expense.find({
       currentStatus: 'HRApproved',
       status: 'InProcess',
+      ...keyword,
     })
       .skip(pageSize * (page - 1))
       .limit(pageSize);
@@ -190,11 +210,13 @@ const getExpenses = asyncHandler(async (req, res) => {
     let count = await Expense.find({
       currentStatus: 'DirectorApproved',
       status: 'InProcess',
+      ...keyword,
     });
     count = count.length;
     const expenses = await Expense.find({
       currentStatus: 'DirectorApproved',
       status: 'InProcess',
+      ...keyword,
     })
       .skip(pageSize * (page - 1))
       .limit(pageSize);
