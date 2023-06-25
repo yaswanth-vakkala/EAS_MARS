@@ -39,7 +39,12 @@ const HistoryScreen = () => {
   const [deleteExpenese, { isLoading: loading }] = useDeleteExpenseMutation();
 
   async function handleDelete(expense_id) {
-    if (!window.confirm('Are you sure to delete the Expense?')) return;
+    if (
+      !window.confirm(
+        'This action will permenantly delete the Expense from database for everyone. Are you sure to delete the Expense?'
+      )
+    )
+      return;
     try {
       await deleteExpenese(expense_id);
       refetch();
@@ -130,20 +135,13 @@ const HistoryScreen = () => {
                   )}
                 </tr>
               ))}
-              <tr style={{ all: 'initial' }}>
-                <td style={{ borderStyle: 'none' }}></td>
-              </tr>
-              <tr style={{ all: 'initial' }}>
-                <td style={{ all: 'initial' }}>
-                  <Paginate
-                    pages={data.pages}
-                    page={data.page}
-                    keyword={'user/history'}
-                  />
-                </td>
-              </tr>
             </tbody>
           </Table>
+          <Paginate
+            pages={data.pages}
+            page={data.page}
+            keyword={'user/history'}
+          />
         </>
       )}
     </>
