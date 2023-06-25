@@ -24,6 +24,7 @@ const DirectorExpenseList = (props) => {
 
   async function handleApprove(expense) {
     if (!window.confirm('Are you sure to Accept the Expense?')) return;
+    
     const data = { ...expense, currentStatus: 'DirectorApproved' };
     try {
       await updateExpense(data);
@@ -62,7 +63,7 @@ const DirectorExpenseList = (props) => {
             <th>Project Name</th>
             <th>Project Id</th>
             <th>Bill Proof</th>
-            <th>Amount</th>
+            <th>Amount(₹)</th>
             <th>Description</th>
             <th>Date</th>
             <th>Action</th>

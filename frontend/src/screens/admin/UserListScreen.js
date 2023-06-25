@@ -3,6 +3,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Container, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FaTrash, FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
+import { LuIndianRupee } from 'react-icons/lu';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import {
@@ -93,6 +94,7 @@ const UserListScreen = () => {
                 <th>Admin</th>
                 <th>Employee Id</th>
                 <th>User Type</th>
+                <th>Balance Amount(₹)</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -114,6 +116,7 @@ const UserListScreen = () => {
                   </td>
                   <td>{user.userId}</td>
                   <td>{user.userType}</td>
+                  <td>{user.amount}</td>
                   <td
                     style={{ display: 'flex', justifyContent: 'space-evenly' }}
                   >
@@ -131,6 +134,11 @@ const UserListScreen = () => {
                       >
                         <FaTrash style={{ color: '#FFFFFF' }} />
                       </Button>
+                      <LinkContainer to={`/admin/user/${user._id}/addMoney`}>
+                        <Button variant="success" className="btn-sm">
+                          <LuIndianRupee />
+                        </Button>
+                      </LinkContainer>
                     </>
                   </td>
                 </tr>

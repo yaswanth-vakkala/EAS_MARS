@@ -66,7 +66,7 @@ const FinanceDepartmentExpenseList = (props) => {
             <th>Project Name</th>
             <th>Project Id</th>
             <th>Bill Proof</th>
-            <th>Amount</th>
+            <th>Amount(₹)</th>
             <th>Description</th>
             <th>Date</th>
             <th>Action</th>

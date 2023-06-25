@@ -223,6 +223,7 @@ const updateUser = asyncHandler(async (req, res) => {
     user.userId = req.body.userId || user.userId;
     user.userType = req.body.userType || user.userType;
     user.password = req.body.password || user.password;
+    user.amount = req.body.amount || user.amount;
 
     await user.save();
 

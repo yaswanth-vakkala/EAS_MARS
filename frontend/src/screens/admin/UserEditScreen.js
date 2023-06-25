@@ -23,7 +23,7 @@ const UserEditScreen = () => {
     data: user,
     isLoading,
     error,
-    refetch,
+    refetch
   } = useGetUserDetailsQuery(employeeId);
 
   const [updateUser, { isLoading: loadingUpdate }] = useUpdateUserMutation();
