@@ -249,6 +249,18 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 });
 
+const addMoney = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (user) {
+    user.amount = req.body.amount || user.amount;
+    await user.save();
+    res.json({ message: 'success' });
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
 export {
   loginUser,
   registerUser,
@@ -260,4 +272,5 @@ export {
   getUserById,
   updateUser,
   addUser,
+  addMoney,
 };

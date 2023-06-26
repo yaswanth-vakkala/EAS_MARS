@@ -10,23 +10,32 @@ import {
   getUserById,
   updateUser,
   addUser,
+  addMoney,
 } from '../controllers/userController.js';
-import { protect, admin } from '../middleware/authMiddleware.js';
+import {
+  protect,
+  admin,
+  FinanceDepartmentOrAdmin,
+} from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.route('/').post(registerUser).get(protect, admin, getUsers);
+router
+  .route('/')
+  .post(registerUser)
+  .get(protect, FinanceDepartmentOrAdmin, getUsers);
 router.post('/login', loginUser);
 router.post('/logout', logoutUser);
-router
-  .route('/profile')
-  .get(protect, getUserProfile)
-  // .put(protect, updateUserProfile);
+router.route('/profile').get(protect, getUserProfile);
+// .put(protect, updateUserProfile);
 router
   .route('/:id')
   .delete(protect, admin, deleteUser)
-  .get(protect, admin, getUserById)
+  .get(protect, FinanceDepartmentOrAdmin, getUserById)
   .patch(protect, admin, updateUser);
 router.route('/addUser').post(protect, admin, addUser);
+router
+  .route('/:id/addMoney')
+  .patch(protect, FinanceDepartmentOrAdmin, addMoney);
 
 export default router;

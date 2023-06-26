@@ -36,7 +36,7 @@ const getExpenseHistory = asyncHandler(async (req, res) => {
       .status(200)
       .json({ expenses, page, pages: Math.ceil(count / pageSize) });
   } else if (req.user.userType === 'HR') {
-    const keyword = req.query.keyword
+    let keyword = req.query.keyword
       ? { empId: { $regex: req.query.keyword, $options: 'i' } }
       : {};
     let count = await Expense.find({

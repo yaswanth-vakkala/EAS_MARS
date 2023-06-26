@@ -6,14 +6,16 @@ import Loader from '../../components/Loader';
 import FormContainer from '../../components/FormContainer';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
   useGetUserDetailsQuery,
-  useUpdateUserMutation,
+  useAddMoneyMutation,
 } from '../../slices/usersApiSlice';
 
 const AddMoneyScreen = () => {
   const { id: employeeId } = useParams();
   const [money, setMoney] = useState('');
+  const { userInfo } = useSelector((state) => state.auth);
 
   const {
     data: user,
@@ -22,21 +24,24 @@ const AddMoneyScreen = () => {
     refetch,
   } = useGetUserDetailsQuery(employeeId);
 
-  const [updateUser, { isLoading: loadingUpdate }] = useUpdateUserMutation();
+  const [addMoney, { isLoading: loadingUpdate }] = useAddMoneyMutation();
 
   const navigate = useNavigate();
 
   const submitHandler = async (e) => {
     e.preventDefault();
     let moneyToBeAdded = Number(money) + Number(user.amount);
-    console.log(moneyToBeAdded);
     try {
-      await updateUser({
+      await addMoney({
         employeeId,
         amount: moneyToBeAdded,
       });
       refetch();
-      navigate('/admin/userlist');
+      if (userInfo.userType === 'Admin') {
+        navigate('/admin/userlist');
+      } else {
+        navigate('/userlist');
+      }
       toast.success('Money added Successfully');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
@@ -44,37 +49,47 @@ const AddMoneyScreen = () => {
   };
   return (
     <>
-      <Link to="/admin/userlist" className="btn btn-light">
-        Go Back
-      </Link>
-      <FormContainer>
-        <h1>Add money to user account</h1>
-        {loadingUpdate && <Loader />}
-        {isLoading ? (
-          <Loader />
-        ) : error ? (
-          <Message variant="danger">
-            {error?.data?.message || error.error}
-          </Message>
-        ) : (
-          <Form onSubmit={submitHandler}>
-            <Form.Group className="my-2" controlId="money">
-              <Form.Label>Enter Amount</Form.Label>
-              <Form.Control
-                type="Number"
-                placeholder="Enter Amount to be added"
-                value={money}
-                onChange={(e) => setMoney(e.target.value)}
-                required
-              ></Form.Control>
-            </Form.Group>
+      {loadingUpdate && <Loader />}
+      {isLoading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="danger">
+          {error?.data?.message || error.error}
+        </Message>
+      ) : (
+        <>
+          {console.log(user)}
+          {userInfo.userType === 'Admin' ? (
+            <Link to="/admin/userlist" className="btn btn-light">
+              Go Back
+            </Link>
+          ) : (
+            <Link to="/userlist" className="btn btn-light">
+              Go Back
+            </Link>
+          )}
 
-            <Button type="submit" variant="success" className="my-2">
-              Add Money
-            </Button>
-          </Form>
-        )}
-      </FormContainer>
+          <FormContainer>
+            <h1>Add money to user account</h1>
+            <Form onSubmit={submitHandler}>
+              <Form.Group className="my-2" controlId="money">
+                <Form.Label>Enter Amount</Form.Label>
+                <Form.Control
+                  type="Number"
+                  placeholder="Enter Amount to be added"
+                  value={money}
+                  onChange={(e) => setMoney(e.target.value)}
+                  required
+                ></Form.Control>
+              </Form.Group>
+
+              <Button type="submit" variant="success" className="my-2">
+                Add Money
+              </Button>
+            </Form>
+          </FormContainer>
+        </>
+      )}
     </>
   );
 };

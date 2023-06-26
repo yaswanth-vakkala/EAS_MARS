@@ -45,14 +45,17 @@ const userWithAccess = asyncHandler(async (req, res, next) => {
 //   }
 // });
 
-// const FinanceDepartment = asyncHandler(async (req, res, next) => {
-//   if (req.user && req.user.userType === 'FinanceDepartment') {
-//     next();
-//   } else {
-//     res.status(401);
-//     throw new Error('Not authorized as FinanceDepartment');
-//   }
-// });
+const FinanceDepartmentOrAdmin = asyncHandler(async (req, res, next) => {
+  if (
+    req.user &&
+    (req.user.userType === 'FinanceDepartment' || req.user.userType === 'Admin')
+  ) {
+    next();
+  } else {
+    res.status(401);
+    throw new Error('Not authorized as FinanceDepartment or Admin');
+  }
+});
 
 // User must be an admin
 const admin = (req, res, next) => {
@@ -64,4 +67,4 @@ const admin = (req, res, next) => {
   }
 };
 
-export { protect, admin, userWithAccess };
+export { protect, admin, userWithAccess, FinanceDepartmentOrAdmin };

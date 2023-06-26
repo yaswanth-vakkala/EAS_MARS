@@ -56,6 +56,13 @@ const Header = () => {
                         <NavDropdown.Item>Expenses Report</NavDropdown.Item>
                       </LinkContainer>
                     )}
+                    {/* FinanceDepartment Links */}
+                    {userInfo && userInfo.userType === 'FinanceDepartment' && (
+                      <LinkContainer to="/userlist">
+                        <NavDropdown.Item>Add Money</NavDropdown.Item>
+                      </LinkContainer>
+                    )}
+
                     <NavDropdown.Item onClick={logoutHandler}>
                       Logout
                     </NavDropdown.Item>

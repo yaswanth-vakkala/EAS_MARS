@@ -77,6 +77,15 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Users'],
     }),
+    addMoney: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/${data.employeeId}/addMoney`,
+        method: 'PATCH',
+        body: JSON.stringify(data),
+        headers: { 'content-type': 'application/json' },
+      }),
+      invalidatesTags: ['Users'],
+    }),
   }),
 });
 
@@ -89,6 +98,7 @@ export const {
   useGetUsersQuery,
   useDeleteUserMutation,
   useUpdateUserMutation,
+  useAddMoneyMutation,
   useGetUserDetailsQuery,
   useGetUserProfileQuery,
 } = userApiSlice;

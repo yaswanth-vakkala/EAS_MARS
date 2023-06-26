@@ -5,6 +5,7 @@ import { AiOutlineClose, AiOutlineCheck } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 
 import { useUpdateExpenseMutation } from '../slices/expensesApiSlice';
+
 import Paginate from '../components/Paginate';
 import ExpenseSearchBox from './ExpenseSearchBox';
 

@@ -1,14 +1,24 @@
 import { Pagination } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-const Paginate = ({ pages, page, isAdmin = false, keyword = '' }) => {
+const Paginate = ({
+  pages,
+  page,
+  isAdmin = false,
+  keyword = '',
+  isFinanceDepartment = false,
+}) => {
   return (
     pages > 1 && (
       <Pagination>
         <LinkContainer
           to={
             !isAdmin
-              ? keyword
+              ? isFinanceDepartment
+                ? keyword
+                  ? `/userlist/search/${keyword}/page/1`
+                  : '/userlist/page/1'
+                : keyword
                 ? `/${keyword}/page/1`
                 : `/page/1`
               : keyword
@@ -21,7 +31,11 @@ const Paginate = ({ pages, page, isAdmin = false, keyword = '' }) => {
         <LinkContainer
           to={
             !isAdmin
-              ? keyword
+              ? isFinanceDepartment
+                ? keyword
+                  ? `/userlist/search/${keyword}/page/${page - 1}`
+                  : `/userlist/page/${page - 1}`
+                : keyword
                 ? `/${keyword}/page/${page - 1}`
                 : `/page/${page - 1}`
               : keyword
@@ -51,7 +65,11 @@ const Paginate = ({ pages, page, isAdmin = false, keyword = '' }) => {
           key={page}
           to={
             !isAdmin
-              ? keyword
+              ? isFinanceDepartment
+                ? keyword
+                  ? `/userlist/search/${keyword}/page/${page}`
+                  : `/userlist/page/${page}`
+                : keyword
                 ? `/${keyword}/page/${page}`
                 : `/page/${page}`
               : keyword
@@ -66,7 +84,11 @@ const Paginate = ({ pages, page, isAdmin = false, keyword = '' }) => {
             key={page + 1}
             to={
               !isAdmin
-                ? keyword
+                ? isFinanceDepartment
+                  ? keyword
+                    ? `/userlist/search/${keyword}/page/${page + 1}`
+                    : `/userlist/page/${page + 1}`
+                  : keyword
                   ? `/${keyword}/page/${page + 1}`
                   : `/page/${page + 1}`
                 : keyword
@@ -84,7 +106,11 @@ const Paginate = ({ pages, page, isAdmin = false, keyword = '' }) => {
             key={page + 2}
             to={
               !isAdmin
-                ? keyword
+                ? isFinanceDepartment
+                  ? keyword
+                    ? `/userlist/search/${keyword}/page/${page + 2}`
+                    : `/userlist/page/${page + 2}`
+                  : keyword
                   ? `/${keyword}/page/${page + 2}`
                   : `/page/${page + 2}`
                 : keyword
@@ -102,7 +128,11 @@ const Paginate = ({ pages, page, isAdmin = false, keyword = '' }) => {
             key={page + 3}
             to={
               !isAdmin
-                ? keyword
+                ? isFinanceDepartment
+                  ? keyword
+                    ? `/userlist/search/${keyword}/page/${page + 3}`
+                    : `/userlist/page/${page + 3}`
+                  : keyword
                   ? `/${keyword}/page/${page + 3}`
                   : `/page/${page + 3}`
                 : keyword
@@ -120,7 +150,11 @@ const Paginate = ({ pages, page, isAdmin = false, keyword = '' }) => {
             key={page + 4}
             to={
               !isAdmin
-                ? keyword
+                ? isFinanceDepartment
+                  ? keyword
+                    ? `/userlist/search/${keyword}/page/${page + 4}`
+                    : `/userlist/page/${page + 4}`
+                  : keyword
                   ? `/${keyword}/page/${page + 4}`
                   : `/page/${page + 4}`
                 : keyword
@@ -137,7 +171,11 @@ const Paginate = ({ pages, page, isAdmin = false, keyword = '' }) => {
         <LinkContainer
           to={
             !isAdmin
-              ? keyword
+              ? isFinanceDepartment
+                ? keyword
+                  ? `/userlist/search/${keyword}/page/${page + 1}`
+                  : `/userlist/page/${page + 1}`
+                : keyword
                 ? `/${keyword}/page/${page + 1}`
                 : `/page/${page + 1}`
               : keyword
@@ -150,7 +188,11 @@ const Paginate = ({ pages, page, isAdmin = false, keyword = '' }) => {
         <LinkContainer
           to={
             !isAdmin
-              ? keyword
+              ? isFinanceDepartment
+                ? keyword
+                  ? `/userlist/search/${keyword}/page/${pages}`
+                  : `/userlist/page/${pages}`
+                : keyword
                 ? `/${keyword}/page/${pages}`
                 : `/page/${pages}`
               : keyword

@@ -21,6 +21,7 @@ import RegisterScreen from './screens/RegisterScreen';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
 import UserListScreen from './screens/admin/UserListScreen';
+import FinanceUserListScreen from './screens/FinanceUserListScreen';
 import UserEditScreen from './screens/admin/UserEditScreen';
 import UserFormScreen from './screens/admin/UserFormScreen';
 import UserPasswordEditScreen from './screens/admin/UserPasswordEditScreen';
@@ -32,6 +33,7 @@ import UserProfileUpdateScreen from './screens/UserProfileUpdateScreen';
 import HigherUserRoute from './components/HigherUserRoute';
 import ExpenseReportScreen from './screens/ExpenseReportScreen';
 import AddMoneyScreen from './screens/admin/AddMoneyScreen';
+import FinanceDepartmentRoute from './components/FinanceDepartmentRoute';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -83,6 +85,23 @@ const router = createBrowserRouter(
       <Route path="" element={<EmployeeRoute />}>
         <Route path="/addExpense" element={<ExpenseForm />} />
       </Route>
+      {/* FinanceDepartment Routes */}
+      <Route path="" element={<FinanceDepartmentRoute />}>
+        <Route path="/userlist" element={<FinanceUserListScreen />} />
+        <Route
+          path="/userlist/search/:keyword/page/:pageNumber"
+          element={<FinanceUserListScreen />}
+        />
+        <Route
+          path="/userlist/search/:keyword"
+          element={<FinanceUserListScreen />}
+        />
+        <Route
+          path="/userlist/page/:pageNumber"
+          element={<FinanceUserListScreen />}
+        />
+        <Route path="/user/:id/addMoney" element={<AddMoneyScreen />} />
+      </Route>
       {/* Higher User Route */}
       <Route path="" element={<HigherUserRoute />}>
         <Route path="/expense/report" element={<ExpenseReportScreen />} />
@@ -91,11 +110,11 @@ const router = createBrowserRouter(
       <Route path="" element={<AdminRoute />}>
         <Route path="/admin/userlist" element={<UserListScreen />} />
         <Route
-          path="admin/userlist/search/:keyword/page/:pageNumber"
+          path="/admin/userlist/search/:keyword/page/:pageNumber"
           element={<UserListScreen />}
         />
         <Route
-          path="admin/userlist/search/:keyword"
+          path="/admin/userlist/search/:keyword"
           element={<UserListScreen />}
         />
         <Route

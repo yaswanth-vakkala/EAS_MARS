@@ -4,25 +4,22 @@ import { Table, Button, Row, Container, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FaTrash, FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
 import { LuIndianRupee } from 'react-icons/lu';
-import Message from '../../components/Message';
-import Loader from '../../components/Loader';
+import Message from '../components/Message';
+import Loader from '../components/Loader';
 import {
   useDeleteUserMutation,
   useGetUsersQuery,
-} from '../../slices/usersApiSlice';
+} from '../slices/usersApiSlice';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
-import Paginate from '../../components/Paginate';
-import SearchBox from '../../components/SearchBox';
-
-const UserListScreen = () => {
+import Paginate from '../components/Paginate';
+import FinanceDepartmentSearchBox from '../components/FinanceDepartmentSearchBox';
+const FinanceUserListScreen = () => {
   const { pageNumber, keyword } = useParams();
   const { data, refetch, isLoading, error } = useGetUsersQuery({
     keyword,
     pageNumber,
   });
-
-  const [deleteUser] = useDeleteUserMutation();
 
   let index = 0;
   function findIndex(i) {
@@ -34,18 +31,6 @@ const UserListScreen = () => {
     return serNum;
   }
 
-  const deleteHandler = async (id) => {
-    if (window.confirm('Are you sure')) {
-      try {
-        await deleteUser(id);
-        toast.success('User Deleted Successfully');
-        refetch();
-      } catch (err) {
-        toast.error(err?.data?.message || err.error);
-      }
-    }
-  };
-
   useEffect(() => {
     refetch();
   }, [refetch]);
@@ -56,24 +41,17 @@ const UserListScreen = () => {
         <Row>
           <Col md="6">
             {keyword && (
-              <Link to="/admin/userlist" className="btn btn-light my-2">
+              <Link to="/userlist" className="btn btn-light my-2">
                 Go Back
-              </Link>
-            )}
-            {!keyword && (
-              <Link to={'/admin/addUser'}>
-                <Button variant="primary" className="my-2">
-                  Add User
-                </Button>
               </Link>
             )}
           </Col>
           <Col className="my-2" md="6">
-            <SearchBox />
+            <FinanceDepartmentSearchBox />
           </Col>
         </Row>
       </Container>
-      <h1>Users</h1>
+      <h1>Users List</h1>
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -121,20 +99,7 @@ const UserListScreen = () => {
                     style={{ display: 'flex', justifyContent: 'space-evenly' }}
                   >
                     <>
-                      <LinkContainer to={`/admin/user/${user._id}/edit`}>
-                        <Button variant="light" className="btn-sm">
-                          <FaEdit />
-                        </Button>
-                      </LinkContainer>
-                      <Button
-                        disabled={isLoading}
-                        variant="danger"
-                        className="btn-sm"
-                        onClick={() => deleteHandler(user._id)}
-                      >
-                        <FaTrash style={{ color: '#FFFFFF' }} />
-                      </Button>
-                      <LinkContainer to={`/admin/user/${user._id}/addMoney`}>
+                      <LinkContainer to={`/user/${user._id}/addMoney`}>
                         <Button variant="success" className="btn-sm">
                           <LuIndianRupee />
                         </Button>
@@ -148,7 +113,7 @@ const UserListScreen = () => {
           <Paginate
             pages={data.pages}
             page={data.page}
-            isAdmin={true}
+            isFinanceDepartment={true}
             keyword={keyword ? keyword : ''}
           />
         </>
@@ -157,4 +122,4 @@ const UserListScreen = () => {
   );
 };
 
-export default UserListScreen;
+export default FinanceUserListScreen;
