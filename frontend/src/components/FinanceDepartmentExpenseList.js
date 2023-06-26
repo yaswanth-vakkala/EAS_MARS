@@ -1,4 +1,4 @@
-import { Table, Col } from 'react-bootstrap';
+import { Table, Col, Container } from 'react-bootstrap';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 import { AiOutlineClose, AiOutlineCheck } from 'react-icons/ai';
@@ -8,6 +8,7 @@ import { useUpdateExpenseMutation } from '../slices/expensesApiSlice';
 
 import Paginate from '../components/Paginate';
 import ExpenseSearchBox from './ExpenseSearchBox';
+import ImageModal from './ImageModal';
 
 const FinanceDepartmentExpenseList = (props) => {
   let index = 0;
@@ -91,7 +92,15 @@ const FinanceDepartmentExpenseList = (props) => {
               <td>{expense.empId}</td>
               <td>{expense.projName}</td>
               <td>{expense.projId}</td>
-              <td>{expense.billProof}</td>
+              {expense.billProof === 'Resource Link' ? (
+                expense.billProof
+              ) : (
+                <Container>
+                  <ImageModal
+                    src={process.env.REACT_APP_API + expense.billProof}
+                  />
+                </Container>
+              )}
               <td>{expense.amount}</td>
               <td>{expense.description}</td>
               <td>{formatDate(expense.date)}</td>

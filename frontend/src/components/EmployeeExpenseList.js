@@ -1,12 +1,16 @@
-import { Table, Col } from 'react-bootstrap';
+import { Table, Col, Container } from 'react-bootstrap';
 import dayjs from 'dayjs';
 import { RiDeleteBin2Fill } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
-import { useDeleteExpenseMutation } from '../slices/expensesApiSlice';
+import {
+  useDeleteExpenseMutation,
+  useDeleteExpenseIMageMutation,
+} from '../slices/expensesApiSlice';
 import Paginate from '../components/Paginate';
 import ExpenseSearchBox from './ExpenseSearchBox';
+import ImageModal from './ImageModal';
 
 function ExpenseList(props) {
   let index = 0;
@@ -23,10 +27,17 @@ function ExpenseList(props) {
   }
 
   const [deleteExpenese, { isLoading }] = useDeleteExpenseMutation();
+  const [deleteExpenseImage, { isLoading: loadingImage }] =
+    useDeleteExpenseIMageMutation();
 
-  async function handleDelete(expense_id) {
+  async function handleDelete(expense_img, expense_id) {
     if (!window.confirm('Are you sure to delete the Expense?')) return;
     try {
+      if (expense_img !== '' && expense_img !== 'Resource Link') {
+        let newExpenseImg = expense_img.split('\\');
+        newExpenseImg = newExpenseImg[newExpenseImg.length - 1];
+        await deleteExpenseImage(newExpenseImg);
+      }
       await deleteExpenese(expense_id);
       props.refetch();
       toast.success('Expense Deleted Successfully');
@@ -69,7 +80,15 @@ function ExpenseList(props) {
               <td>{expense.empId}</td>
               <td>{expense.projName}</td>
               <td>{expense.projId}</td>
-              <td>{expense.billProof}</td>
+              {expense.billProof === 'Resource Link' ? (
+                <td>No Image</td>
+              ) : (
+                <Container>
+                  <ImageModal
+                    src={process.env.REACT_APP_API + expense.billProof}
+                  />
+                </Container>
+              )}
               <td>{expense.currentStatus}</td>
               <td>
                 <span style={{ color: '#0000FF' }}>{expense.status}</span>
@@ -78,12 +97,25 @@ function ExpenseList(props) {
               <td>{expense.description}</td>
               <td>{formatDate(expense.date)}</td>
               <td align="center">
-                <RiDeleteBin2Fill
-                  color="#FF0000"
-                  size={'1.5em'}
-                  onClick={() => handleDelete(expense._id)}
-                  style={{ cursor: 'pointer' }}
-                />
+                {expense.currentStatus === 'DirectorApproved' ? (
+                  <RiDeleteBin2Fill
+                    color="#FF0000"
+                    size={'1.5em'}
+                    onClick={() =>
+                      alert(
+                        'cannot delete an expense once it has all approvals'
+                      )
+                    }
+                    style={{ cursor: 'pointer' }}
+                  />
+                ) : (
+                  <RiDeleteBin2Fill
+                    color="#FF0000"
+                    size={'1.5em'}
+                    onClick={() => handleDelete(expense.billProof, expense._id)}
+                    style={{ cursor: 'pointer' }}
+                  />
+                )}
               </td>
             </tr>
           ))}

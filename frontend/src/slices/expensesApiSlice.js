@@ -1,4 +1,4 @@
-import { EXPENSES_URL } from '../constants';
+import { EXPENSES_URL, UPLOAD_URL } from '../constants';
 import { apiSlice } from './apiSlice';
 
 export const expensesApiSlice = apiSlice.injectEndpoints({
@@ -52,7 +52,7 @@ export const expensesApiSlice = apiSlice.injectEndpoints({
     }),
     uploadExpenseImage: builder.mutation({
       query: (data) => ({
-        url: `/api/upload`,
+        url: `${UPLOAD_URL}`,
         method: 'POST',
         body: data,
       }),
@@ -60,6 +60,13 @@ export const expensesApiSlice = apiSlice.injectEndpoints({
     deleteExpense: builder.mutation({
       query: (expenseId) => ({
         url: `${EXPENSES_URL}/${expenseId}`,
+        method: 'DELETE',
+      }),
+      providesTags: ['Expense'],
+    }),
+    deleteExpenseIMage: builder.mutation({
+      query: (expenseImg) => ({
+        url: `${UPLOAD_URL}/image/${expenseImg}`,
         method: 'DELETE',
       }),
       providesTags: ['Expense'],
@@ -75,4 +82,5 @@ export const {
   useUpdateExpenseMutation,
   useUploadExpenseImageMutation,
   useDeleteExpenseMutation,
+  useDeleteExpenseIMageMutation,
 } = expensesApiSlice;

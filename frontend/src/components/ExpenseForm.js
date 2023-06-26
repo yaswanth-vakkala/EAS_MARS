@@ -5,7 +5,10 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { useCreateExpenseMutation } from '../slices/expensesApiSlice';
+import {
+  useCreateExpenseMutation,
+  useUploadExpenseImageMutation,
+} from '../slices/expensesApiSlice';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
 
@@ -17,7 +20,7 @@ const ExpenseForm = () => {
   const [empId, setEmpId] = useState(userInfo.userId);
   const [projName, setProjName] = useState('');
   const [projId, setProjId] = useState('');
-  const [billProof, setbillProof] = useState('');
+  const [billProof, setBillProof] = useState('Resource Link');
   const [cost, setCost] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
@@ -25,7 +28,20 @@ const ExpenseForm = () => {
   const navigate = useNavigate();
 
   const [createExpense, { isLoading }] = useCreateExpenseMutation();
+  const [uploadExpenseImage, { isLoading: loadingUpload }] =
+    useUploadExpenseImageMutation();
 
+  const uploadImageHandler = async (e) => {
+    const formData = new FormData();
+    formData.append('image', e.target.files[0]);
+    try {
+      const res = await uploadExpenseImage(formData).unwrap();
+      toast.success(res.message);
+      setBillProof(res.image);
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
+  };
   const submitHandler = async (e) => {
     e.preventDefault();
     let amount = Math.round(Number(cost) * 100) / 100;
@@ -54,9 +70,9 @@ const ExpenseForm = () => {
 
   return (
     <>
-      <Link to="/" className="btn btn-light">
+      {/* <Link to="/" className="btn btn-light">
         Go Back
-      </Link>
+      </Link> */}
 
       <FormContainer>
         <h1>Add Expense</h1>
@@ -105,7 +121,7 @@ const ExpenseForm = () => {
             ></Form.Control>
           </Form.Group>
 
-          <Form.Group className="my-2" controlId="billProof">
+          {/* <Form.Group className="my-2" controlId="billProof">
             <Form.Label>Bill Proof</Form.Label>
             <Form.Control
               type="text"
@@ -114,7 +130,7 @@ const ExpenseForm = () => {
               onChange={(e) => setbillProof(e.target.value)}
               required
             ></Form.Control>
-          </Form.Group>
+          </Form.Group> */}
 
           <Form.Group className="my-2" controlId="cost">
             <Form.Label>Amount(₹)</Form.Label>
@@ -138,7 +154,7 @@ const ExpenseForm = () => {
             ></Form.Control>
           </Form.Group>
 
-          <Form.Group className="my-3" controlId="date">
+          <Form.Group controlId="date">
             <Form.Label>Date</Form.Label>
             <Form.Control
               type="date"
@@ -146,6 +162,22 @@ const ExpenseForm = () => {
               onChange={(e) => setDate(e.target.value)}
               required
             ></Form.Control>
+          </Form.Group>
+
+          <Form.Group className="my-3" controlId="billProof">
+            <Form.Label>Upload image of the bill</Form.Label>
+            {/* <Form.Control
+              type="text"
+              placeholder="Enter image url"
+              value={billProof}
+              onChange={(e) => setBillProof(e.target.value)}
+            ></Form.Control> */}
+            <Form.Control
+              label="Choose File"
+              onChange={uploadImageHandler}
+              type="file"
+            ></Form.Control>
+            {loadingUpload && <Loader />}
           </Form.Group>
 
           <Button disabled={isLoading} type="submit" variant="primary">

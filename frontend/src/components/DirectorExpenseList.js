@@ -1,4 +1,4 @@
-import { Table, Col } from 'react-bootstrap';
+import { Table, Col, Container } from 'react-bootstrap';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 import { AiOutlineClose, AiOutlineCheck } from 'react-icons/ai';
@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useUpdateExpenseMutation } from '../slices/expensesApiSlice';
 import Paginate from '../components/Paginate';
 import ExpenseSearchBox from './ExpenseSearchBox';
+import ImageModal from './ImageModal';
 
 const DirectorExpenseList = (props) => {
   const navigate = useNavigate();
@@ -87,7 +88,15 @@ const DirectorExpenseList = (props) => {
               <td>{expense.empId}</td>
               <td>{expense.projName}</td>
               <td>{expense.projId}</td>
-              <td>{expense.billProof}</td>
+              {expense.billProof === 'Resource Link' ? (
+                <td>No Image</td>
+              ) : (
+                <Container>
+                  <ImageModal
+                    src={process.env.REACT_APP_API + expense.billProof}
+                  />
+                </Container>
+              )}
               <td>{expense.amount}</td>
               <td>{expense.description}</td>
               <td>{formatDate(expense.date)}</td>

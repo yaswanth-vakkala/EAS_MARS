@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { Table, Col } from 'react-bootstrap';
+import { Table, Col, Container } from 'react-bootstrap';
 import dayjs from 'dayjs';
 import { RiDeleteBin2Fill } from 'react-icons/ri';
 import { toast } from 'react-toastify';
@@ -8,11 +8,13 @@ import { useNavigate, Link } from 'react-router-dom';
 import {
   useGetExpensesHistoryQuery,
   useDeleteExpenseMutation,
+  useDeleteExpenseIMageMutation,
 } from '../slices/expensesApiSlice';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
 import SearchBox from '../components/SearchBox';
+import ImageModal from '../components/ImageModal';
 
 const HistoryScreen = () => {
   const navigate = useNavigate();
@@ -39,8 +41,10 @@ const HistoryScreen = () => {
   }
 
   const [deleteExpenese, { isLoading: loading }] = useDeleteExpenseMutation();
+  const [deleteExpenseImage, { isLoading: loadingImage }] =
+    useDeleteExpenseIMageMutation();
 
-  async function handleDelete(expense_id) {
+  async function handleDelete(expense_img, expense_id) {
     if (
       !window.confirm(
         'This action will permenantly delete the Expense from database for everyone. Are you sure to delete the Expense?'
@@ -48,6 +52,11 @@ const HistoryScreen = () => {
     )
       return;
     try {
+      if (expense_img !== '' && expense_img !== 'Resource Link') {
+        let newExpenseImg = expense_img.split('\\');
+        newExpenseImg = newExpenseImg[newExpenseImg.length - 1];
+        await deleteExpenseImage(newExpenseImg);
+      }
       await deleteExpenese(expense_id);
       refetch();
       navigate('/user/history');
@@ -104,7 +113,15 @@ const HistoryScreen = () => {
                   <td>{expense.empId}</td>
                   <td>{expense.projName}</td>
                   <td>{expense.projId}</td>
-                  <td>{expense.billProof}</td>
+                  {expense.billProof === 'Resource Link' ? (
+                    expense.billProof
+                  ) : (
+                    <Container>
+                      <ImageModal
+                        src={process.env.REACT_APP_API + expense.billProof}
+                      />
+                    </Container>
+                  )}
                   <td>
                     {expense.status === 'Reimbursed' ? (
                       <span style={{ color: '#58c445' }}>Reimbursed</span>
@@ -138,7 +155,9 @@ const HistoryScreen = () => {
                       <RiDeleteBin2Fill
                         color="#FF0000"
                         size={'1.5em'}
-                        onClick={() => handleDelete(expense._id)}
+                        onClick={() =>
+                          handleDelete(expense.billProof, expense._id)
+                        }
                         style={{ cursor: 'pointer' }}
                       />
                     </td>
