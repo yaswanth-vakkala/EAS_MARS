@@ -252,7 +252,11 @@ const updateUser = asyncHandler(async (req, res) => {
 const addMoney = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
   if (user) {
-    user.amount = req.body.amount || user.amount;
+    if (req.body.amount === 0 || req.body.amount === '0') {
+      user.amount = req.body.amount;
+    } else {
+      user.amount = req.body.amount || user.amount;
+    }
     await user.save();
     res.json({ message: 'success' });
   } else {

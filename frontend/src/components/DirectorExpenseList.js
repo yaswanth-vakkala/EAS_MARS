@@ -2,13 +2,14 @@ import { Table, Col } from 'react-bootstrap';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 import { AiOutlineClose, AiOutlineCheck } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useUpdateExpenseMutation } from '../slices/expensesApiSlice';
 import Paginate from '../components/Paginate';
 import ExpenseSearchBox from './ExpenseSearchBox';
 
 const DirectorExpenseList = (props) => {
+  const navigate = useNavigate();
   let index = 0;
   function findIndex(i) {
     let row_index = i + 1;
@@ -96,12 +97,21 @@ const DirectorExpenseList = (props) => {
                   justifyContent: 'space-between',
                 }}
               >
-                <AiOutlineCheck
+                <Link
+                  to={`/expense/calculation/${expense.user}/${expense._id}`}
+                >
+                  <AiOutlineCheck
+                    size={'1.7em'}
+                    color="#00FF00"
+                    style={{ cursor: 'pointer' }}
+                  />
+                </Link>
+                {/* <AiOutlineCheck
                   size={'1.7em'}
                   color="#00FF00"
                   onClick={() => handleApprove(expense)}
                   style={{ cursor: 'pointer' }}
-                />
+                /> */}
                 <AiOutlineClose
                   size={'1.7em'}
                   color="#FF0000"

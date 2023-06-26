@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema(
     userId: {
       type: String,
       required: ['employee Id field is required'],
-      unique: true,
+      // unique: true,
     },
     amount: {
       type: String,

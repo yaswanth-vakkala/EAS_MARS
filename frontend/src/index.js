@@ -34,6 +34,8 @@ import HigherUserRoute from './components/HigherUserRoute';
 import ExpenseReportScreen from './screens/ExpenseReportScreen';
 import AddMoneyScreen from './screens/admin/AddMoneyScreen';
 import FinanceDepartmentRoute from './components/FinanceDepartmentRoute';
+import ExpenseCalculationScreen from './screens/ExpenseCalculationScreen';
+import DirectorRoute from './components/DirectorRoute';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -101,6 +103,13 @@ const router = createBrowserRouter(
           element={<FinanceUserListScreen />}
         />
         <Route path="/user/:id/addMoney" element={<AddMoneyScreen />} />
+      </Route>
+      {/* Director Route */}
+      <Route path="" element={<DirectorRoute />}>
+      <Route
+          path="/expense/calculation/:uid/:eid"
+          element={<ExpenseCalculationScreen />}
+        />
       </Route>
       {/* Higher User Route */}
       <Route path="" element={<HigherUserRoute />}>

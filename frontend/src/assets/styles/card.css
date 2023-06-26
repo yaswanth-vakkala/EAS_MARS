@@ -1,0 +1,9 @@
+.custom-mobileResponsive {
+  width: 40rem;
+}
+
+@media only screen and (max-width: 600px) {
+  .custom-mobileResponsive {
+    width: 21rem;
+  }
+}

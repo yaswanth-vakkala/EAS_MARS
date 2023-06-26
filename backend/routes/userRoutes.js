@@ -16,6 +16,7 @@ import {
   protect,
   admin,
   FinanceDepartmentOrAdmin,
+  FinanceDepartmentOrAdminOrDirector,
 } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -31,11 +32,11 @@ router.route('/profile').get(protect, getUserProfile);
 router
   .route('/:id')
   .delete(protect, admin, deleteUser)
-  .get(protect, FinanceDepartmentOrAdmin, getUserById)
+  .get(protect, FinanceDepartmentOrAdminOrDirector, getUserById)
   .patch(protect, admin, updateUser);
 router.route('/addUser').post(protect, admin, addUser);
 router
   .route('/:id/addMoney')
-  .patch(protect, FinanceDepartmentOrAdmin, addMoney);
+  .patch(protect, FinanceDepartmentOrAdminOrDirector, addMoney);
 
 export default router;

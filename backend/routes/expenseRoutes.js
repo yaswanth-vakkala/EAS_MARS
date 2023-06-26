@@ -16,6 +16,6 @@ router
   .route('/:id')
   .delete(protect, deleteExpense)
   .patch(protect, userWithAccess, updateExpense)
-  .get(protect, getExpenseById);
+  .get(protect, userWithAccess, getExpenseById);
 
 export default router;

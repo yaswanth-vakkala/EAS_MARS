@@ -33,6 +33,7 @@ const Header = () => {
             <Navbar.Brand>Expense Approval System</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
+
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
               {userInfo ? (
@@ -41,9 +42,13 @@ const Header = () => {
                     title={userInfo.firstName + ' ' + userInfo.lastName}
                     id="username"
                   >
+                    <LinkContainer to="/">
+                      <NavDropdown.Item>Home</NavDropdown.Item>
+                    </LinkContainer>
                     <LinkContainer to="/user/profile">
                       <NavDropdown.Item>Profile</NavDropdown.Item>
                     </LinkContainer>
+
                     {userInfo && userInfo.userType !== 'Admin' && (
                       <LinkContainer to="user/history">
                         <NavDropdown.Item>Expenses History</NavDropdown.Item>
