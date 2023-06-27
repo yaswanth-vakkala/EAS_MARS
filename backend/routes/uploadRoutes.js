@@ -2,7 +2,6 @@ import path from 'path';
 import express from 'express';
 import multer from 'multer';
 import { protect } from '../middleware/authMiddleware.js';
-import asyncHandler from '../middleware/asyncHandler.js';
 import fs from 'fs';
 
 const router = express.Router();

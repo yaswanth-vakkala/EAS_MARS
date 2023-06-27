@@ -36,6 +36,10 @@ import AddMoneyScreen from './screens/admin/AddMoneyScreen';
 import FinanceDepartmentRoute from './components/FinanceDepartmentRoute';
 import ExpenseCalculationScreen from './screens/ExpenseCalculationScreen';
 import DirectorRoute from './components/DirectorRoute';
+import ProjectListScreen from './screens/admin/ProjectListScreen';
+import ProjectFormScreen from './screens/admin/ProjectFormScreen';
+import ProjectEditScreen from './screens/admin/ProjectEditScreen';
+import DropDownSearchSelect from './components/DropDownSearchSelect';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -106,7 +110,7 @@ const router = createBrowserRouter(
       </Route>
       {/* Director Route */}
       <Route path="" element={<DirectorRoute />}>
-      <Route
+        <Route
           path="/expense/calculation/:uid/:eid"
           element={<ExpenseCalculationScreen />}
         />
@@ -115,8 +119,24 @@ const router = createBrowserRouter(
       <Route path="" element={<HigherUserRoute />}>
         <Route path="/expense/report" element={<ExpenseReportScreen />} />
       </Route>
+
       {/* Admin users */}
       <Route path="" element={<AdminRoute />}>
+        <Route path="/admin/projectlist" element={<ProjectListScreen />} />
+        <Route
+          path="/admin/projectlist/search/:keyword/page/:pageNumber"
+          element={<ProjectListScreen />}
+        />
+        <Route
+          path="/admin/projectlist/search/:keyword"
+          element={<ProjectListScreen />}
+        />
+        <Route
+          path="/admin/projectlist/page/:pageNumber"
+          element={<ProjectListScreen />}
+        />
+        <Route path="/admin/addProject" element={<ProjectFormScreen />} />
+        <Route path="/admin/project/:id/edit" element={<ProjectEditScreen />} />
         <Route path="/admin/userlist" element={<UserListScreen />} />
         <Route
           path="/admin/userlist/search/:keyword/page/:pageNumber"

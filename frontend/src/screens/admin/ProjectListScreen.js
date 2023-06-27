@@ -3,26 +3,25 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Container, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FaTrash, FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
-import { LuIndianRupee } from 'react-icons/lu';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import {
-  useDeleteUserMutation,
-  useGetUsersQuery,
-} from '../../slices/usersApiSlice';
+  useDeleteProjectMutation,
+  useGetProjectsQuery,
+} from '../../slices/projectsApiSlice';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import Paginate from '../../components/Paginate';
-import SearchBox from '../../components/SearchBox';
+import ProjectSearchBox from '../../components/ProjectSearchBox';
 
-const UserListScreen = () => {
+const ProjectListScreen = () => {
   const { pageNumber, keyword } = useParams();
-  const { data, refetch, isLoading, error } = useGetUsersQuery({
+  const { data, refetch, isLoading, error } = useGetProjectsQuery({
     keyword,
     pageNumber,
   });
 
-  const [deleteUser] = useDeleteUserMutation();
+  const [deleteProject] = useDeleteProjectMutation();
 
   let index = 0;
   function findIndex(i) {
@@ -35,10 +34,10 @@ const UserListScreen = () => {
   }
 
   const deleteHandler = async (id) => {
-    if (window.confirm('Are you sure to delete the user?')) {
+    if (window.confirm('Are you sure to delete the project?')) {
       try {
-        await deleteUser(id);
-        toast.success('User Deleted Successfully');
+        await deleteProject(id);
+        toast.success('Project Deleted Successfully');
         refetch();
       } catch (err) {
         toast.error(err?.data?.message || err.error);
@@ -56,32 +55,32 @@ const UserListScreen = () => {
         <Row>
           <Col md="6">
             {keyword && (
-              <Link to="/admin/userlist" className="btn btn-light my-2">
+              <Link to="/admin/projectlist" className="btn btn-light my-2">
                 Go Back
               </Link>
             )}
             {!keyword && (
-              <Link to={'/admin/addUser'}>
+              <Link to={'/admin/addProject'}>
                 <Button variant="primary" className="my-2">
-                  Add User
+                  Add Project
                 </Button>
               </Link>
             )}
           </Col>
           <Col className="my-2" md="6">
-            <SearchBox />
+            <ProjectSearchBox />
           </Col>
         </Row>
       </Container>
-      <h1>Users List</h1>
+      <h1>Projects List</h1>
       {isLoading ? (
         <Loader />
       ) : error ? (
         <Message variant="danger">
           {error?.data?.message || error.error}
         </Message>
-      ) : data.users.length === 0 ? (
-        <Message variant="danger">No Users found</Message>
+      ) : data.projects.length === 0 ? (
+        <Message variant="danger">No Projects found</Message>
       ) : (
         <>
           <Table striped bordered hover responsive className="table-sm">
@@ -89,39 +88,23 @@ const UserListScreen = () => {
               <tr style={{ textAlign: 'center' }}>
                 <th>S.No</th>
                 <th>Database Id</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Employee Id</th>
-                <th>User Type</th>
-                <th>Admin</th>
-                <th>Balance Amount(₹)</th>
+                <th>Project Name</th>
+                <th>Project Id</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {data.users.map((user) => (
-                <tr key={user._id} style={{ textAlign: 'center' }}>
+              {data.projects.map((project) => (
+                <tr key={project._id} style={{ textAlign: 'center' }}>
                   <td>{findIndex(index)}</td>
-                  <td>{user._id}</td>
-                  <td>{user.firstName + ' ' + user.lastName}</td>
-                  <td>
-                    <a href={`mailto:${user.email}`}>{user.email}</a>
-                  </td>
-                  <td>{user.userId}</td>
-                  <td>{user.userType}</td>
-                  <td>
-                    {user.userType === 'Admin' ? (
-                      <FaCheck style={{ color: '#00FF00' }} />
-                    ) : (
-                      <FaTimes style={{ color: '#FF0000' }} />
-                    )}
-                  </td>
-                  <td>{user.amount}</td>
+                  <td>{project._id}</td>
+                  <td>{project.projName}</td>
+                  <td>{project.projId}</td>
                   <td
                     style={{ display: 'flex', justifyContent: 'space-evenly' }}
                   >
                     <>
-                      <LinkContainer to={`/admin/user/${user._id}/edit`}>
+                      <LinkContainer to={`/admin/project/${project._id}/edit`}>
                         <Button variant="light" className="btn-sm">
                           <FaEdit />
                         </Button>
@@ -130,15 +113,10 @@ const UserListScreen = () => {
                         disabled={isLoading}
                         variant="danger"
                         className="btn-sm"
-                        onClick={() => deleteHandler(user._id)}
+                        onClick={() => deleteHandler(project._id)}
                       >
                         <FaTrash style={{ color: '#FFFFFF' }} />
                       </Button>
-                      <LinkContainer to={`/admin/user/${user._id}/addMoney`}>
-                        <Button variant="success" className="btn-sm">
-                          <LuIndianRupee />
-                        </Button>
-                      </LinkContainer>
                     </>
                   </td>
                 </tr>
@@ -149,6 +127,7 @@ const UserListScreen = () => {
             pages={data.pages}
             page={data.page}
             isAdmin={true}
+            isProject={true}
             keyword={keyword ? keyword : ''}
           />
         </>
@@ -157,4 +136,4 @@ const UserListScreen = () => {
   );
 };
 
-export default UserListScreen;
+export default ProjectListScreen;

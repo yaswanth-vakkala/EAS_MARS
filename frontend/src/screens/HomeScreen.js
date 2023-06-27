@@ -1,7 +1,7 @@
 import { Button } from 'react-bootstrap';
 import { useGetExpensesQuery } from '../slices/expensesApiSlice';
 import { useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import EmployeeExpenseList from '../components/EmployeeExpenseList';
@@ -11,11 +11,16 @@ import FinanceDepartmentExpenseList from '../components/FinanceDepartmentExpense
 
 const HomeScreen = () => {
   const { pageNumber, keyword } = useParams();
+  const { userInfo } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  if (userInfo.userType === 'Admin') {
+    navigate('/admin/userlist');
+  }
+
   const { data, refetch, isLoading, error } = useGetExpensesQuery({
     keyword,
     pageNumber,
   });
-  const { userInfo } = useSelector((state) => state.auth);
   return (
     <>
       {userInfo.userType === 'Employee' && !keyword && (

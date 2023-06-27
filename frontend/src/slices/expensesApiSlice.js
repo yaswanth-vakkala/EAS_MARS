@@ -15,6 +15,14 @@ export const expensesApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 5,
       providesTags: ['Expenses'],
     }),
+    createExpenseReport: builder.mutation({
+      query: (data) => ({
+        url: `${EXPENSES_URL}/report`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Expense'],
+    }),
     getExpensesHistory: builder.query({
       query: ({ pageNumber, keyword }) => ({
         url: `${EXPENSES_URL}/history`,
@@ -76,6 +84,7 @@ export const expensesApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetExpensesQuery,
+  useCreateExpenseReportMutation,
   useGetExpensesHistoryQuery,
   useGetExpenseDetailsQuery,
   useCreateExpenseMutation,

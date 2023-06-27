@@ -7,6 +7,7 @@ const Paginate = ({
   isAdmin = false,
   keyword = '',
   isFinanceDepartment = false,
+  isProject = false,
 }) => {
   return (
     pages > 1 && (
@@ -21,6 +22,10 @@ const Paginate = ({
                 : keyword
                 ? `/${keyword}/page/1`
                 : `/page/1`
+              : isProject
+              ? keyword
+                ? `/admin/projectlist/search/${keyword}/page/1`
+                : `/admin/projectlist/page/1`
               : keyword
               ? `/admin/userlist/search/${keyword}/page/1`
               : `/admin/userlist/page/1`
@@ -38,6 +43,10 @@ const Paginate = ({
                 : keyword
                 ? `/${keyword}/page/${page - 1}`
                 : `/page/${page - 1}`
+              : isProject
+              ? keyword
+                ? `/admin/projectlist/search/${keyword}/page/${page - 1}`
+                : `/admin/projectlist/page/${page - 1}`
               : keyword
               ? `/admin/userlist/search/${keyword}/page/${page - 1}`
               : `/admin/userlist/page/${page - 1}`
@@ -72,6 +81,10 @@ const Paginate = ({
                 : keyword
                 ? `/${keyword}/page/${page}`
                 : `/page/${page}`
+              : isProject
+              ? keyword
+                ? `/admin/projectlist/search/${keyword}/page/${page}`
+                : `/admin/projectlist/page/${page}`
               : keyword
               ? `/admin/userlist/search/${keyword}/page/${page}`
               : `/admin/userlist/page/${page}`
@@ -91,6 +104,10 @@ const Paginate = ({
                   : keyword
                   ? `/${keyword}/page/${page + 1}`
                   : `/page/${page + 1}`
+                : isProject
+                ? keyword
+                  ? `/admin/projectlist/search/${keyword}/page/${page + 1}`
+                  : `/admin/projectlist/page/${page + 1}`
                 : keyword
                 ? `/admin/userlist/search/${keyword}/page/${page + 1}`
                 : `/admin/userlist/page/${page + 1}`
@@ -113,6 +130,10 @@ const Paginate = ({
                   : keyword
                   ? `/${keyword}/page/${page + 2}`
                   : `/page/${page + 2}`
+                : isProject
+                ? keyword
+                  ? `/admin/projectlist/search/${keyword}/page/${page + 2}`
+                  : `/admin/projectlist/page/${page + 2}`
                 : keyword
                 ? `/admin/userlist/search/${keyword}/page/${page + 2}`
                 : `/admin/userlist/page/${page + 2}`
@@ -135,6 +156,10 @@ const Paginate = ({
                   : keyword
                   ? `/${keyword}/page/${page + 3}`
                   : `/page/${page + 3}`
+                : isProject
+                ? keyword
+                  ? `/admin/projectlist/search/${keyword}/page/${page + 3}`
+                  : `/admin/projectlist/page/${page + 3}`
                 : keyword
                 ? `/admin/userlist/search/${keyword}/page/${page + 3}`
                 : `/admin/userlist/page/${page + 3}`
@@ -157,6 +182,10 @@ const Paginate = ({
                   : keyword
                   ? `/${keyword}/page/${page + 4}`
                   : `/page/${page + 4}`
+                : isProject
+                ? keyword
+                  ? `/admin/projectlist/search/${keyword}/page/${page + 4}`
+                  : `/admin/projectlist/page/${page + 4}`
                 : keyword
                 ? `/admin/userlist/search/${keyword}/page/${page + 4}`
                 : `/admin/userlist/page/${page + 4}`
@@ -178,6 +207,10 @@ const Paginate = ({
                 : keyword
                 ? `/${keyword}/page/${page + 1}`
                 : `/page/${page + 1}`
+              : isProject
+              ? keyword
+                ? `/admin/projectlist/search/${keyword}/page/${page + 1}`
+                : `/admin/projectlist/page/${page + 1}`
               : keyword
               ? `/admin/userlist/search/${keyword}/page/${page + 1}`
               : `/admin/userlist/page/${page + 1}`
@@ -195,6 +228,10 @@ const Paginate = ({
                 : keyword
                 ? `/${keyword}/page/${pages}`
                 : `/page/${pages}`
+              : isProject
+              ? keyword
+                ? `/admin/projectlist/search/${keyword}/page/${page}`
+                : `/admin/projectlist/page/${pages}`
               : keyword
               ? `/admin/userlist/search/${keyword}/page/${pages}`
               : `/admin/userlist/page/${pages}`

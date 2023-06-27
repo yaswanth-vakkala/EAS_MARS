@@ -28,7 +28,13 @@ const protect = asyncHandler(async (req, res, next) => {
 });
 
 const userWithAccess = asyncHandler(async (req, res, next) => {
-  if (req.user && req.user.userType !== 'Employee') {
+  if (
+    (req.user &&
+      (req.user.userType === 'HR' ||
+        req.user.userType === 'FinanceDepartment' ||
+        req.user.userType === 'Director')) ||
+    req.user.userTYpe === 'Admin'
+  ) {
     next();
   } else {
     res.status(401);

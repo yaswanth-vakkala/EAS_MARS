@@ -93,7 +93,7 @@ const FinanceDepartmentExpenseList = (props) => {
               <td>{expense.projName}</td>
               <td>{expense.projId}</td>
               {expense.billProof === 'Resource Link' ? (
-                expense.billProof
+                <td>No Image</td>
               ) : (
                 <Container>
                   <ImageModal

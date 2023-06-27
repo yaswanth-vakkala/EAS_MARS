@@ -11,7 +11,7 @@ import {
   updateUser,
   addUser,
   addMoney,
-} from '../controllers/userController.js';
+} from '../controllers/UserController.js';
 import {
   protect,
   admin,

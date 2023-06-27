@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Container } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Select from 'react-select';
 
 import {
   useCreateExpenseMutation,
   useUploadExpenseImageMutation,
 } from '../slices/expensesApiSlice';
+import { useGetAllProjectsQuery } from '../slices/projectsApiSlice';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
 
@@ -20,6 +22,7 @@ const ExpenseForm = () => {
   const [empId, setEmpId] = useState(userInfo.userId);
   const [projName, setProjName] = useState('');
   const [projId, setProjId] = useState('');
+  const [project, setProject] = useState();
   const [billProof, setBillProof] = useState('Resource Link');
   const [cost, setCost] = useState('');
   const [description, setDescription] = useState('');
@@ -27,6 +30,12 @@ const ExpenseForm = () => {
 
   const navigate = useNavigate();
 
+  const {
+    data: projects,
+    refetch: projectsRefetch,
+    isLoading: loadingProjects,
+    error: projectsError,
+  } = useGetAllProjectsQuery();
   const [createExpense, { isLoading }] = useCreateExpenseMutation();
   const [uploadExpenseImage, { isLoading: loadingUpload }] =
     useUploadExpenseImageMutation();
@@ -68,6 +77,12 @@ const ExpenseForm = () => {
     }
   };
 
+  function handleSelectChange(data) {
+    setProject(data);
+    setProjName(data.projName);
+    setProjId(data.projId);
+  }
+
   return (
     <>
       {/* <Link to="/" className="btn btn-light">
@@ -99,7 +114,21 @@ const ExpenseForm = () => {
           ></Form.Control>
         </Form.Group> */}
 
-          <Form.Group className="my-2" controlId="projName">
+          <Form.Group className="my-2" controlId="project">
+            <Form.Label>Select project from the list</Form.Label>
+            <Select
+              options={projects}
+              getOptionLabel={(option) => option.projName}
+              getOptionValue={(option) => option.projId}
+              placeholder="Select Project"
+              value={project}
+              onChange={handleSelectChange}
+              isSearchable={true}
+              required
+            />
+          </Form.Group>
+
+          {/* <Form.Group className="my-2" controlId="projName">
             <Form.Label>Project Name</Form.Label>
             <Form.Control
               type="name"
@@ -119,7 +148,7 @@ const ExpenseForm = () => {
               onChange={(e) => setProjId(e.target.value)}
               required
             ></Form.Control>
-          </Form.Group>
+          </Form.Group> */}
 
           {/* <Form.Group className="my-2" controlId="billProof">
             <Form.Label>Bill Proof</Form.Label>

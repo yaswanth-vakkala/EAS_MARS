@@ -259,6 +259,36 @@ const getExpenseById = asyncHandler(async (req, res) => {
   throw new Error('Resource not found');
 });
 
+// @desc    Get expenses report
+// @route   GET /api/report
+// @access  Private
+const getReport = asyncHandler(async (req, res) => {
+  const { firstDay, lastDay } = req.body;
+  const report = await Expense.aggregate([
+    {
+      $match: {
+        date: {
+          $gte: new Date(firstDay),
+          $lte: new Date(lastDay),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: {},
+        totalExpenseCost: { $sum: '$amount' },
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+  if (report) {
+    res.status(200).json(report);
+  } else {
+    res.status(404);
+    throw new Error('Report not found');
+  }
+});
+
 // @desc    Create an Expense
 // @route   POST /api/expense
 // @access  Private/Admin
@@ -287,8 +317,13 @@ const createExpense = asyncHandler(async (req, res) => {
     user: req.user._id,
   });
 
-  const createdExpense = await expense.save();
-  res.status(201).json(createdExpense);
+  if (expense) {
+    const createdExpense = await expense.save();
+    res.status(201).json(createdExpense);
+  } else {
+    res.status(409);
+    throw new Error('Expense creation failed');
+  }
 });
 
 // @desc    Delete a product
@@ -328,4 +363,5 @@ export {
   createExpense,
   deleteExpense,
   updateExpense,
+  getReport,
 };
