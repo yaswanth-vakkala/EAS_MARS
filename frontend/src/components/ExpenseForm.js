@@ -118,7 +118,9 @@ const ExpenseForm = () => {
             <Form.Label>Select project from the list</Form.Label>
             <Select
               options={projects}
-              getOptionLabel={(option) => option.projName}
+              getOptionLabel={(option) =>
+                option.projName + ' ( project Id : ' + option.projId + ')'
+              }
               getOptionValue={(option) => option.projId}
               placeholder="Select Project"
               value={project}
