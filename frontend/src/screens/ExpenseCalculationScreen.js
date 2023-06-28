@@ -76,6 +76,15 @@ const ExpenseCalculationScreen = () => {
     }
   }
 
+  const currencyFormatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'INR',
+
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+  });
+
   return (
     <>
       <Link to="/" className="btn btn-light">
@@ -102,12 +111,14 @@ const ExpenseCalculationScreen = () => {
                 {user.firstName} {user.lastName}
               </strong>{' '}
               is{' '}
-              <strong style={{ color: '#000000' }}>{user.amount} rupees</strong>
+              <strong style={{ color: '#000000' }}>
+                {currencyFormatter.format(user.amount)}
+              </strong>
             </Card.Text>
             <Card.Text>
               The cost of the selected expense is{' '}
               <strong style={{ color: '#000000' }}>
-                {expense.amount} rupees
+                {currencyFormatter.format(expense.amount)}
               </strong>
             </Card.Text>
 
@@ -119,7 +130,9 @@ const ExpenseCalculationScreen = () => {
                   <strong style={{ color: '#000000' }}>{expense.amount}</strong>{' '}
                   =
                   <strong style={{ color: '#008000' }}>
-                    {Number(user.amount) - Number(expense.amount)} rupees
+                    {currencyFormatter.format(
+                      Number(user.amount) - Number(expense.amount)
+                    )}
                   </strong>{' '}
                   as the new account balance
                 </Card.Text>
@@ -149,7 +162,9 @@ const ExpenseCalculationScreen = () => {
                   <strong style={{ color: '#000000' }}>{expense.amount}</strong>{' '}
                   ={' '}
                   <strong style={{ color: '#FF0000' }}>
-                    {Number(user.amount) - Number(expense.amount)} rupees
+                    {currencyFormatter.format(
+                      Number(user.amount) - Number(expense.amount)
+                    )}
                   </strong>
                 </Card.Text>
                 <Card.Text>
@@ -158,12 +173,16 @@ const ExpenseCalculationScreen = () => {
                   <strong style={{ color: '#000000' }}>{expense.amount}</strong>{' '}
                   ={' '}
                   <strong style={{ color: '#008000' }}>
-                    {(Number(user.amount) - Number(expense.amount)) * -1} rupees
+                    {currencyFormatter.format(
+                      (Number(user.amount) - Number(expense.amount)) * -1
+                    )}
                   </strong>
                 </Card.Text>
                 <Card.Text>
                   The account balance will be{' '}
-                  <strong style={{ color: '#000000' }}>0</strong>
+                  <strong style={{ color: '#000000' }}>
+                    {currencyFormatter.format(0)}
+                  </strong>
                 </Card.Text>
                 <Card.Text>
                   <strong>

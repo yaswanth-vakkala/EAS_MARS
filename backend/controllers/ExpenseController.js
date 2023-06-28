@@ -264,13 +264,32 @@ const getExpenseById = asyncHandler(async (req, res) => {
 // @access  Private
 const getReport = asyncHandler(async (req, res) => {
   const { firstDay, lastDay } = req.body;
-  const report = await Expense.aggregate([
+  // const report = await Expense.aggregate([
+  //   {
+  //     $match: {
+  //       date: {
+  //         $gte: new Date(firstDay),
+  //         $lte: new Date(lastDay),
+  //       },
+
+  //     },
+  //   },
+  //   {
+  //     $group: {
+  //       _id: {},
+  //       totalExpenseCost: { $sum: '$amount' },
+  //       count: { $sum: 1 },
+  //     },
+  //   },
+  // ]);
+  let report1 = await Expense.aggregate([
     {
       $match: {
         date: {
           $gte: new Date(firstDay),
           $lte: new Date(lastDay),
         },
+        status: 'Reimbursed',
       },
     },
     {
@@ -281,8 +300,81 @@ const getReport = asyncHandler(async (req, res) => {
       },
     },
   ]);
-  if (report) {
-    res.status(200).json(report);
+  let report2 = await Expense.aggregate([
+    {
+      $match: {
+        date: {
+          $gte: new Date(firstDay),
+          $lte: new Date(lastDay),
+        },
+        status: { $in: ['Rejected', 'InProcess'] },
+      },
+    },
+    {
+      $group: {
+        _id: {},
+        totalExpenseCost: { $sum: '$amount' },
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+  if (report1.length === 0) {
+    report1 = [{ _id: {}, totalExpenseCost: 0, count: 0 }];
+  }
+  if (report2.length === 0) {
+    report2 = [{ _id: {}, totalExpenseCost: 0, count: 0 }];
+  }
+  if (report1 && report2) {
+    res.status(200).json({ report1, report2 });
+  } else {
+    res.status(404);
+    throw new Error('Report not found');
+  }
+});
+
+// @desc    Get expenses report
+// @route   GET /api/report
+// @access  Private
+const getProjectReport = asyncHandler(async (req, res) => {
+  const { projectId } = req.body;
+  let projectReport1 = await Expense.aggregate([
+    {
+      $match: {
+        projId: projectId,
+        status: { $in: ['Reimbursed'] },
+      },
+    },
+    {
+      $group: {
+        _id: '$projId',
+        totalExpenseCost: { $sum: '$amount' },
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+  let projectReport2 = await Expense.aggregate([
+    {
+      $match: {
+        projId: projectId,
+        status: { $in: ['Rejected', 'InProcess'] },
+      },
+    },
+    {
+      $group: {
+        _id: '$projId',
+        totalExpenseCost: { $sum: '$amount' },
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+  if (projectReport1.length === 0) {
+    projectReport1 = [{ _id: {}, totalExpenseCost: 0, count: 0 }];
+  }
+  if (projectReport2.length === 0) {
+    projectReport2 = [{ _id: {}, totalExpenseCost: 0, count: 0 }];
+  }
+  if (projectReport1 && projectReport2) {
+    res.status(200).json({ projectReport1, projectReport2 });
   } else {
     res.status(404);
     throw new Error('Report not found');
@@ -364,4 +456,5 @@ export {
   deleteExpense,
   updateExpense,
   getReport,
+  getProjectReport,
 };

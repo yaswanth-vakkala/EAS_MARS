@@ -23,6 +23,14 @@ export const expensesApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Expense'],
     }),
+    createProjectExpenseReport: builder.mutation({
+      query: (data) => ({
+        url: `${EXPENSES_URL}/projectReport`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Expense'],
+    }),
     getExpensesHistory: builder.query({
       query: ({ pageNumber, keyword }) => ({
         url: `${EXPENSES_URL}/history`,
@@ -92,4 +100,5 @@ export const {
   useUploadExpenseImageMutation,
   useDeleteExpenseMutation,
   useDeleteExpenseIMageMutation,
+  useCreateProjectExpenseReportMutation,
 } = expensesApiSlice;
